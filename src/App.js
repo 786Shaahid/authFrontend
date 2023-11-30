@@ -6,6 +6,7 @@ import { SignInPage } from './components/signIn';
 import { SignInWithEmail } from './components/signinWithEmail';
 import { Navbar } from './components/navbar';
 function App() {
+  
  return(
 <>
   <BrowserRouter>
