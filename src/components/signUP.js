@@ -1,34 +1,44 @@
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
-import { useEffect, useState } from "react";
-import axios from "axios";
-export const SingUpPage = () => {
+import {  useState } from "react";
+import {  signupUser } from "../redux/reducers/userReducer";
+import { useDispatch ,useSelector} from "react-redux";
+// import axios from "axios";
 
-  const [userData, setUserData] = useState({
+export const SingUpPage = () => {
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
+  // const userData= useSelector(state=>state.authReducer.userSignup);
+  
+  const error= useSelector(state=>state.authReducer.error);
+  // console.log(error);
+
+    const [userData, setUserData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  useEffect(()=>{
-    // axios.post("https://authbackend-74z0.onrender.com/api/users/signup",{userData}).then((res)=>{
-    //   console.log(res);
-    // }).catch((err)=>console.log(err));
-    axios.post("http://localhost:8080/api/users/signup",{userData}).then((res)=>{
-      console.log(res);
-    }).catch((err)=>console.log(err))
-},[userData]);
-
-
-   const handleFormData=(e)=>{
+  
+  
+  const handleFormData= async(e)=>{
     e.preventDefault();
-       //console.log(userData);
-
+      // console.log(error);
+      // setUserData(use)
+      const result= await dispatch(signupUser(userData));
+      if(result.payload.success){
+        navigate("/signin");
+      }
+      setUserData({});
    }
 
   return (
     <>
+    
+    <div className="notification_box">
+     <h4 >{error}</h4>
+    </div>
       <div className="container color_blue">
         <h1>SignUp </h1>
         <form onSubmit={handleFormData}>

@@ -1,31 +1,69 @@
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { TfiEmail } from "react-icons/tfi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
+import { useDispatch ,useSelector} from "react-redux";
+import {  signinUser } from "../redux/reducers/userReducer";
 import { useState } from "react";
 
 export const SignInPage = () => {
-  const [user,setUser]=useState({
-    email:'',
-    password:''
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const accessToken=useSelector(state=>state.authReducer.accessToken);
+  const refreshToken=useSelector(state=>state.authReducer.refreshToken);
+  // console.log(accessToken,"---",refreshToken);
+  const error=useSelector(state=>state.authReducer.error);
+  const message=useSelector(state=>state.authReducer.message);
+  
+  
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
   });
 
-  const handleSubmit=(e)=>{
-    e.preventDefault();
-    console.log(user);
-  }
+  // const getResult = async (user)=>{
+    
+  //   const resultAll=await  dispatch(getAll());
+
+  //   return {result ,resultAll}
+  // }
+
+  const handleSubmit = async (e) => {
+    // console.log(user);
+    try {
+     e.preventDefault();
+    const result = await dispatch(signinUser(user));
+     if(result.payload.success){
+        localStorage.setItem("accessToken",accessToken);
+        localStorage.setItem('refreshToken',refreshToken);
+         navigate('/');
+    }
+   } catch (error) {
+      console.log(error);
+   }
+  };
   return (
     <>
+     <div className="notification_box">
+     { 
+        (error && ( <h4 >{error}</h4>)) || (message && ( <h4 >{message}</h4>))
+    
+      }  
+    </div>
       <div className="container color_blue">
         <h1>SignIn </h1>
         <form onSubmit={handleSubmit}>
           <label>Enter Your Email </label>
           <br />
-          <input type="text" 
-           value={user.email || ""}
-           onChange={e=>setUser({...user,email:e.target.value})}
-          name="email" placeholder="Enter your email" />
+          <input
+            type="text"
+            value={user.email || ""}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
           <br />
           <br />
           <label>Enter Your Password </label>
@@ -33,9 +71,10 @@ export const SignInPage = () => {
           <input
             type="text"
             name="passport"
-            onChange={e=>setUser({...user,password:e.target.value})}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
             value={user.password || ""}
             placeholder="Enter your password"
+            required
           />
           <br />
           <br />
