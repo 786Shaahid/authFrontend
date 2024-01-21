@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
-import { getAll } from "../redux/reducers/userReducer";
+import { getAll, userAtions } from "../redux/reducers/userReducer";
 import { addFriend, removeFriend } from "../redux/reducers/userFriend";
 import { useEffect } from "react";
 
@@ -37,23 +37,25 @@ export const Home = () => {
               {user.friendship?._id ? (<button
                 onClick={(e) => {
                   e.preventDefault();
+                  dispatch(userAtions.updateBtnInSuggestionFriend({userId:user._id,friendId:user.friendship?._id}))
                   dispatch(removeFriend({ id: user.friendship?._id, token: accessToken }))
                 }}
                 className="friBtn"
-              >
+                >
                 Cancel
               </button>) : (
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(
-                      addFriend({
-                        userId: userData._id,
-                        friendId: user._id,
-                        token: accessToken,
-                      })
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(
+                    addFriend({
+                      userId: userData._id,
+                      friendId: user._id,
+                      token: accessToken,
+                    })
                     );
-                    dispatch(getAll(userData._id))
+                    dispatch(userAtions.updateBtnInSuggestionFriend({userId:user._id,friendId:user.friendship?._id}))
+                    // dispatch(getAll(userData._id))
                    }}
                   className="friBtn"
                 >

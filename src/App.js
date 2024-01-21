@@ -20,7 +20,7 @@ function App() {
           <Route path="/signinbyemail" element={<SignInWithEmail />} />
           <Route path="/" element={<Navbar />}>
             <Route index element={<Home />} />
-            {/* <Route path="/chat" element={<Chat />} /> */}
+            {/* <Route path="/chat"  element={<Chat />} /> */}
             <Route path="/friendlist" element={<FriendList />} />
             <Route path="/friendRequest" element={<FriendRequest />} />
           </Route>

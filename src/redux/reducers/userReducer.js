@@ -99,7 +99,15 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    
+         updateBtnInSuggestionFriend:(state,action)=>{
+          console.log("action.payload",state.users);
+               const userId=action.payload.userId;
+               const friendId=action.payload.friendId;
+              //  const findUser=state.users.findI();
+              //  console.log(findUser); 
+              //  const findIndex=state.users.indexOf(findUser);
+
+         },
     
   },
   extraReducers: {
