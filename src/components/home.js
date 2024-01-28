@@ -6,13 +6,10 @@ import { useEffect } from "react";
 
 export const Home = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
   const users = useSelector((state) => state.authReducer.users);
   const userData = useSelector((state) => state.authReducer.userData);
   const accessToken = useSelector((state) => state.authReducer.accessToken);
-  // const suggestionFriends = users.filter(
-  //   (person) => person._id !== userData._id
-  // );
+
 
   //    Get all user list 
   useEffect(() => {
@@ -23,8 +20,8 @@ export const Home = () => {
     <>
     
       <div className="suggestion_box">
-        {users.map((user) => (
-          <div className="suggestion_friend_box" key={user._id}>
+        {users.map((user,index) => (
+          <div className="suggestion_friend_box" key={index}>
             <div className="suggestion">
               <img
                 src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
@@ -37,7 +34,7 @@ export const Home = () => {
               {user.friendship?._id ? (<button
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatch(userAtions.updateBtnInSuggestionFriend({userId:user._id,friendId:user.friendship?._id}))
+                  // dispatch(userAtions.updateBtnInSuggestionFriend({user,friendship:user.friendship?._id,index}))
                   dispatch(removeFriend({ id: user.friendship?._id, token: accessToken }))
                 }}
                 className="friBtn"
@@ -54,8 +51,7 @@ export const Home = () => {
                       token: accessToken,
                     })
                     );
-                    dispatch(userAtions.updateBtnInSuggestionFriend({userId:user._id,friendId:user.friendship?._id}))
-                    // dispatch(getAll(userData._id))
+                    dispatch(userAtions.updateBtnInSuggestionFriend({user,friendship:user.friendship?._id,index}))
                    }}
                   className="friBtn"
                 >

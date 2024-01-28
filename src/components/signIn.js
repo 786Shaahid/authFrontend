@@ -3,27 +3,27 @@ import { FaFacebook } from "react-icons/fa";
 import { TfiEmail } from "react-icons/tfi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
-import { useDispatch ,useSelector} from "react-redux";
-import {  signinUser } from "../redux/reducers/userReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { signinUser } from "../redux/reducers/userReducer";
 import { useState } from "react";
 
 export const SignInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const accessToken=useSelector(state=>state.authReducer.accessToken);
-  const refreshToken=useSelector(state=>state.authReducer.refreshToken);
+  const accessToken = useSelector(state => state.authReducer.accessToken);
+  const refreshToken = useSelector(state => state.authReducer.refreshToken);
   // console.log(accessToken,"---",refreshToken);
-  const error=useSelector(state=>state.authReducer.error);
-  const message=useSelector(state=>state.authReducer.message);
-  
-  
+  const error = useSelector(state => state.authReducer.error);
+  const message = useSelector(state => state.authReducer.message);
+
+
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
   // const getResult = async (user)=>{
-    
+
   //   const resultAll=await  dispatch(getAll());
 
   //   return {result ,resultAll}
@@ -32,25 +32,25 @@ export const SignInPage = () => {
   const handleSubmit = async (e) => {
     // console.log(user);
     try {
-     e.preventDefault();
-    const result = await dispatch(signinUser(user));
-     if(result.payload.success){
-        localStorage.setItem("accessToken",accessToken);
-        localStorage.setItem('refreshToken',refreshToken);
-         navigate('/');
-    }
-   } catch (error) {
+      e.preventDefault();
+      const result = await dispatch(signinUser(user));
+      if (result.payload.success) {
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        navigate('/');
+      }
+    } catch (error) {
       console.log(error);
-   }
+    }
   };
   return (
     <>
-     <div className="notification_box">
-     { 
-        (error && ( <h4 >{error}</h4>)) || (message && ( <h4 >{message}</h4>))
-    
-      }  
-    </div>
+
+      {
+        (error && (<div className="notification_box"><h4 >{error}</h4> </div>)) || (message && (<div className="notification_box"><h4 >{error}</h4> </div>))
+
+      }
+
       <div className="container color_blue">
         <h1>SignIn </h1>
         <form onSubmit={handleSubmit}>

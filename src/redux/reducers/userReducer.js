@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-// initialize user
+
+/**1. initialize user*/
 const initialState = {
   isMailSend: false,
   emailToken: {},
@@ -10,60 +11,45 @@ const initialState = {
   refreshToken:"",
   userData:{},
   loading: false,
-  friendList: [],
-  friend: {},
   users: [],
-  signinWithEmail: {
-    email: "",
-    otp: "",
-  },
-  userSignin: {
-    email: "",
-    password: "",
-  },
-  userSignup: {
-    name: "",
-    email: "",
-    password: "",
-  },
 };
 
 // create action
-//1.Sing up
+/**1.Sing up */
 export const signupUser = createAsyncThunk(
   "auth/signupUser",
-  async (user, { rejectWithValue }) => {
+  async (user, { rejectWithValue ,fulfillWithValue}) => {
     try {
       const response = await axios.post("/api/users/signup", user);
       // console.log("response",response.data);
-      return response.data; 
+      return fulfillWithValue(response.data); 
     } catch (err) {
       console.log(err);
       return rejectWithValue(err);
     }
   }
 );
-//2. Sign in
+/**2. Sign in*/
 export const signinUser = createAsyncThunk(
   "auth/signinUser",
-  async (user={}, { rejectWithValue }) => {
+  async (user={}, {fulfillWithValue, rejectWithValue }) => {
     try {
       const response = await axios.post("/api/users/signin", user);
-      return response.data;
+      return fulfillWithValue(response.data);
     } catch (err) {
       console.log(err.response);
       return rejectWithValue(err.response);
     }
   }
 );
-// 3. signin by email
+/**3. Sign in*/
 // a. send email
 export const sendMail = createAsyncThunk(
   "auth/sendMail",
-  async (data, { rejectWithValue }) => {
+  async (data, { rejectWithValue,fulfillWithValue }) => {
     try {
       const response = await axios.post("/api/users/sendmail", data);
-      return response;
+      return fulfillWithValue(response);
     } catch (err) {
      return rejectWithValue(err);
     }
@@ -72,17 +58,17 @@ export const sendMail = createAsyncThunk(
 // b. send otp
 export const sendOtpEmail = createAsyncThunk(
   "auth/sendOtp",
-  async (data, { rejectWithValue }) => {
+  async (data, { rejectWithValue ,fulfillWithValue}) => {
     try {
       const response = await axios.post("/api/users/singinotp", data);
-      console.log(response);
-      return response;
+      console.log(response.data);
+      return fulfillWithValue(response.data);
     } catch (err) {
      return rejectWithValue(err);
     }
   }
 );
-// 4. get all users
+/**4. get all users*/
 export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithValue,rejectWithValue}) => {
   //  console.log(data);
   try {
@@ -93,22 +79,40 @@ export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithVa
   }
 });
 
-// 5.
+ /**5. Logout User */
+  export const logoutUser= createAsyncThunk('auth/logout',async(data,{fulfillWithValue,rejectWithValue})=>{
+    console.log(data);
+    try {
+   const response= await axios.get('/api/users/logout',{
+    headers:{
+      Authorization: `Bearer ${data}`
+   }
+    });
+    console.log(response);
+    fulfillWithValue(response.data);
+ } catch (error) {
+  rejectWithValue(error);
+ }
+  })
+
+
+
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
          updateBtnInSuggestionFriend:(state,action)=>{
-          console.log("action.payload",state.users);
-               const userId=action.payload.userId;
-               const friendId=action.payload.friendId;
-              //  const findUser=state.users.findI();
-              //  console.log(findUser); 
-              //  const findIndex=state.users.indexOf(findUser);
+          const {user,friendship,index}= action.payload;
+              
+               
 
          },
-    
+         isEmailSend:(state,action)=>{
+          console.log(action.payload);
+            state.isMailSend= !action.payload
+         },
+          
   },
   extraReducers: {
     // 1. sign up
@@ -138,13 +142,13 @@ export const authSlice = createSlice({
       state.message=action.payload.message
     },
     [signinUser.rejected]: (state, action) => {
-      // console.log('signin-reject',action.payload.data.error);
-      state.error = action.payload.data.error;
+      console.log('signin-reject',action.payload);
+      state.error = action.payload.data.message;
     },
 
     // 3. sending mail
     [sendMail.pending]: (state) => {
-      console.log("pending");
+      // console.log("pending");
       state.loading = true;
     },
     [sendMail.fulfilled]: (state, action) => {
@@ -161,9 +165,12 @@ export const authSlice = createSlice({
       state.loading = true;
     },
     [sendOtpEmail.fulfilled]: (state, action) => {
+      console.log(action.payload);
       state.loading = false;
-      // state.emailToken = action.payload.data;
-      console.log("hiie odfo", action.payload);
+      state.accessToken = action.payload.data.accessToken;
+      state.refreshToken=action.payload.data.refreshToken;
+      state.userData=action.payload.data.userData
+      state.message=action.payload.message
     },
     [sendOtpEmail.rejected]: (state, action) => {
       state.err = action.payload;
@@ -182,6 +189,18 @@ export const authSlice = createSlice({
       // console.log(action);
       state.error = action.payload;
     },
+    // logout 
+    [logoutUser.pending]:(state)=>{
+      state.loading=false;
+    },
+    [logoutUser.fulfilled]:(state,action)=>{
+       state.userData="";
+       console.log(action);
+    },
+    [logoutUser.rejected]:(state,action)=>{
+      console.log(action.payload);
+      state.error=action.payload
+    }
   },
 });
 export const authReducer = authSlice.reducer;

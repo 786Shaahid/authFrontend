@@ -12,7 +12,7 @@ const initialState={
 }
 
     // 1. add friends 
-export const addFriend= createAsyncThunk('friend/addFriend',async (data,{rejectWithValue})=>{
+export const addFriend= createAsyncThunk('friend/addFriend',async (data,{fulfillWithValue,rejectWithValue})=>{
   // console.log(data);
          try{
            const friendAdded= await axios.post('/api/friends/addfriend',{
@@ -24,14 +24,14 @@ export const addFriend= createAsyncThunk('friend/addFriend',async (data,{rejectW
             }
             });
             // console.log(friendAdded);
-           return friendAdded;
-         }catch(err){
+            return fulfillWithValue(friendAdded);
+          }catch(err){
   rejectWithValue(err.response.data);
          }
 })
 
 // 2. get all friend request 
-export const getAllFriendRequest= createAsyncThunk('friend/getAllFriendRequest',async (data,{rejectWithValue})=>{
+export const getAllFriendRequest= createAsyncThunk('friend/getAllFriendRequest',async (data,{fulfillWithValue,rejectWithValue})=>{
   // console.log(data);
          try{
            const friendRequest= await axios.get('/api/friends/getAllFriendRequest',{
@@ -40,13 +40,13 @@ export const getAllFriendRequest= createAsyncThunk('friend/getAllFriendRequest',
             }
             });
             // console.log(friendRequest.data);
-           return friendRequest.data;
+           return fulfillWithValue(friendRequest.data);
          }catch(err){
   rejectWithValue(err.response.data);
          }
 })
 // 3. accept friend request
-export const acceptFriend=createAsyncThunk('friend/acceptFriend',async(data,{rejectWithValue})=>{
+export const acceptFriend=createAsyncThunk('friend/acceptFriend',async(data,{fulfillWithValue,rejectWithValue})=>{
   // console.log(data);
    try {
      const response= await axios.post('/api/friends/acceptfriend',{id:data.id},{
@@ -55,13 +55,14 @@ export const acceptFriend=createAsyncThunk('friend/acceptFriend',async(data,{rej
      }
      });
      console.log(response.data);
-     return response.data;
+     return fulfillWithValue( response.data);
    } catch (error) {
+    return rejectWithValue(error);
    }
 });
 
 // 4. remove friend request 
-export const removeFriend=createAsyncThunk('friend/removeFriend',async(data,{rejectWithValue})=>{
+export const removeFriend=createAsyncThunk('friend/removeFriend',async(data,{fulfillWithValue,rejectWithValue})=>{
   // console.log(data);
    try {
      const response= await axios.post('/api/friends/removefriend',{id:data.id},{
@@ -70,14 +71,15 @@ export const removeFriend=createAsyncThunk('friend/removeFriend',async(data,{rej
      }
      });
      console.log(response.data);
-     return response.data;
+     return fulfillWithValue( response.data);
    } catch (error) {
+    return rejectWithValue(error)
    }
 
 });
 
  // 5. list of freinds
-export const friendList=createAsyncThunk('friend/friendList',async(data,{rejectWithValue})=>{
+export const friendList=createAsyncThunk('friend/friendList',async(data,{fulfillWithValue,rejectWithValue})=>{
   // console.log(data);
    try {
      const response= await axios.post('/api/friends/friendlist',{id:data.id},{
@@ -86,7 +88,7 @@ export const friendList=createAsyncThunk('friend/friendList',async(data,{rejectW
      }
      });
      console.log(response.data);
-     return response.data;
+     return fulfillWithValue( response.data);
    } catch (error) {
     console.log(error);
     rejectWithValue(error)

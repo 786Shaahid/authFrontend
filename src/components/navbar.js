@@ -1,11 +1,21 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 import { MdNotificationsActive } from "react-icons/md";
+import { logoutUser } from "../redux/reducers/userReducer";
 
 
 export const Navbar = () => {
-  const user = useSelector((state) =>state.authReducer.userData );
+  const user= useSelector(state =>state.authReducer.userData );
+  const accessToken=useSelector(state=>state.authReducer.accessToken);
+  // console.log("accessToken",accessToken);
+  const dispatch=useDispatch();
   // console.log(user);
+const handleLogout= ()=>{
+   dispatch(logoutUser(accessToken));
+  // console.log(res);
+  console.log("cliked");
+}
+
   return (
     <>
       <nav>
@@ -35,9 +45,9 @@ export const Navbar = () => {
               </div>
               <div className="navDiv">
               <span>
-              <a href="https://authbackend-74z0.onrender.com/api/users/logout">
-                  logout
-              </a>
+              <div   onClick={handleLogout}>
+                  Logout
+              </div>
               </span>
                 <MdNotificationsActive size="30px"/>
               </div>

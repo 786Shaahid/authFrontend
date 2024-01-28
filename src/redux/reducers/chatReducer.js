@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import {  createSlice } from "@reduxjs/toolkit"
 // import axios from "axios"
 // import io from 'socket.io-client';
 
@@ -9,6 +9,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
    const initialState={
       isChatToFriend:false,
       messages: [],
+      friendInfo:{
+         id:"",
+         name:""
+      }
    }
   
 
@@ -29,11 +33,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
         name:"Chat",
         initialState,
         reducers:{
-            chatFriend: (state, action) => {
-                  console.log(action.payload);
+            chatBox: (state, action) => {
+                  // console.log(action.payload);
                   state.isChatToFriend =!action.payload
                 },
                 // Add a reducer to handle receiving messages from Socket.io
+             friendInformation:(state,action)=>{
+
+             },
+
              receiveMessage: (state, action) => {
              state.messages.push({
              senderSocketId: action.payload.senderSocketId,

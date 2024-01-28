@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAll, sendMail, sendOtpEmail } from "../redux/reducers/userReducer";
+import {  sendMail, sendOtpEmail, userAtions } from "../redux/reducers/userReducer";
 import { useNavigate } from "react-router-dom";
 
 export const SignInWithEmail = () => {
   const [inputEmail, setInputEmail] = useState("");
   const [otp, setOtp] = useState("");
-  let isMailSend = useSelector((state) => state.isMailSend);
+  let isMailSend = useSelector((state) => state.authReducer.isMailSend);
   // let emailOtp=useSelector(state=> state.signinWithEmail);
   const dispatch = useDispatch();
   const navigate=useNavigate();
@@ -15,16 +15,15 @@ export const SignInWithEmail = () => {
   const handleEmailMessage = (e) => {
     e.preventDefault();
     dispatch(sendMail({ email: inputEmail }));
-    // dispatch(emailOtp.email="");
     setInputEmail("");
   };
   // handle sending otp
   const handleOTP = (e) => {
     e.preventDefault();
     dispatch(sendOtpEmail({ otp: otp }));
+    dispatch(userAtions.isEmailSend(isMailSend));
     setOtp("");
-    navigate('/home');
-     dispatch(getAll()); 
+    navigate('/');
   };
   return (
     <>
@@ -37,6 +36,7 @@ export const SignInWithEmail = () => {
                 type="text"
                 name="otp"
                 placeholder="Enter OTP Number"
+                value={otp}
                 onChange={(e) => setOtp(e.target.value)}
               />
               <br />
