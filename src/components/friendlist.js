@@ -17,8 +17,9 @@ export const FriendList = () => {
 
    return (
       <>
-         <div className="suggestion_box" >
-            {myFriends.map((friend,index) => (
+            {
+              myFriends.length?   ( <div className="suggestion_box" >
+                 {myFriends.map((friend,index) => (
                <div className={`suggestion_friend_box ${isChatToFriend ? 'disabled' : ''}`} key={index}>
                   <div className="suggestion">
                      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="pic" className="suggestion_pic" />
@@ -28,7 +29,6 @@ export const FriendList = () => {
                      <button onClick={(e) => {
                         e.preventDefault();
                         dispatch(removeFriend({ id: friend._id, token: accessToken }));
-                        // dispatch(addFriend({userID:userData._id, friendId:user._id,token:accessToken}))
                      }}
                         className="friBtn">Remove</button>
                         <button onClick={(e) => {
@@ -37,14 +37,12 @@ export const FriendList = () => {
                            dispatch(chatActions.chatBox(isChatToFriend));
                         }}
                            className="friBtn"
-                            
                         >Chat</button>
                     
                   </div>
                </div>))}
-         </div>
-         <div>
-         </div>
+         </div>):(<h2 style={{color:"white"}} >You Have No Friends </h2>)  
+            }
          
          {  isChatToFriend &&   ( <div className="chat">
         <Chat friendId={friendId}/>

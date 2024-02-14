@@ -5,11 +5,12 @@
   width: 100%;
   height: 100vh;
   display: flex;
+  /* flex-direction: column; */
   align-items: center;
   justify-content: center;
   /* margin: 30px auto; */
-  position: relative;
-  background-image: linear-gradient(45deg, rgb(124, 189, 124, 0.8), yellow);
+  /* position: relative; */
+  background-image: linear-gradient(30deg, rgb(17, 29, 54),rgb(53, 39, 187),rgb(31, 12, 114));
 }
 /* .center{
   width: 100%;
@@ -27,7 +28,7 @@
   text-align: center;
   width: 30vw;
   min-height: 50vh;
-  background-color: whitesmoke;
+  background-color: rgb(245, 245, 245);
   border-radius: 10%;
   box-shadow: 3px 3px 4px 6px rgb(183, 158, 206);
   padding: 0 10px;
@@ -59,7 +60,7 @@ input {
   border-radius: 5px;
 }
 .btn-style:active {
-  background-image: linear-gradient(red, blue);
+  background-image: linear-gradient(45deg,red, blue);
   font-size: 20px;
 }
 .logBtn {
@@ -129,6 +130,9 @@ nav {
   align-items: center;
   text-transform: capitalize;
 }
+.logout{
+  cursor: pointer;
+}
 
 a {
   color: white;
@@ -144,21 +148,32 @@ a {
 
 .suggestion_box {
   padding: 10px;
-  width: 60vw;
+  width: 50vw;
   height: 50vh;
   border: 1px solid black;
+  background-color: white;
   text-transform: capitalize;
   color: white;
   border-radius: 20px;
   overflow-y: auto;
-  box-shadow: inset 2px 3px 6px 6px blue;
+  box-shadow:  2px 3px 6px 6px rgb(101, 93, 204);
+  /* position: relative; */
+}
+.header_box{
+  /* position: absolute; */
+  /* top: 20px; */
+  /* left:0px; */
+  width: 10rem;
+  height: 4rem;
+  background-color: antiquewhite;
+  
 }
 .disabled{
   opacity: 0.6;
   pointer-events: none;
 }
 .suggestion_friend_box {
-  width: 55vw;
+  width: 45vw;
   height: 35px;
   border: 1px solid rgb(36, 26, 11);
   display: flex;
@@ -168,7 +183,6 @@ a {
   background-color: rgb(55, 33, 133);
   border-radius: 30px;
   margin: 5px auto;
-  /* margin-bottom: 5px; */
 }
 .suggestion {
   width: 15vw;
@@ -183,15 +197,18 @@ a {
   border-radius: 50%;
 }
 .friBtn {
-  min-width: 5rem;
-  height: 2rem;
+  min-width: 6rem;
+  height: 2.4rem;
   font-size: 20px;
-  font-weight: 500;
-  border-radius: 20px;
+  font-weight: 550;
+  color: rgb(10, 125, 15);
+  border-radius: 15px;
 }
 .friBtn:active {
-  background-color: rgb(22, 6, 6);
-  color: wheat;
+  background-color: rgb(15, 159, 36);
+  color: white;
+  outline: 3px solid whitesmoke;
+  outline-offset: 3px;
 }
 
 /* chat page */
@@ -302,18 +319,3 @@ border-top-left-radius:40px ; */
 
 /* notifications container */
 
-.notification_box {
-  min-width: 30rem;
-  height: 3rem;
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  top: 30px;
-  color: blue;
-  border-radius: 10px;
-  border-bottom: 2px solid blueviolet;
-  font-size: 20px;
-  text-transform: capitalize;
-}

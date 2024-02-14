@@ -1,0 +1,30 @@
+.notification_box {
+    min-width: 15rem;
+    height: 3rem;
+    position: fixed;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgba(192, 225, 234, 0.6);
+    top: 3rem;
+    color: rgb(134, 32, 17);
+    border-radius: 10px;
+    border-bottom: 2px solid blueviolet;
+    font-size: large;
+    font-weight: 600;
+    font-family: sans-serif;
+    text-transform: capitalize;
+    padding: 0 5px;
+  }
+  
+  .crossBtn{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    color: white;
+    background-color: brown;
+    padding:1px ;
+    text-align: center;
+    cursor: pointer;
+    margin-left: 10px;
+  }

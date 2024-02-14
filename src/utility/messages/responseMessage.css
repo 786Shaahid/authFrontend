@@ -1,0 +1,57 @@
+
+.responseIcon{
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: white;
+  padding: 2px;
+  background-color: rgb(96, 168, 7);
+}
+.responseContainer{
+   min-width: 20vw;
+   height: 9vh;
+   display: flex;
+   padding: 1px 5px;
+   justify-content: space-between;
+   align-items: center;
+   background-color: aquamarine;
+   position: absolute;
+   top: 15vh;
+   right: 0.5rem;
+   z-index: 3;
+}
+.response{
+    min-width: 20vw;
+    height: 9vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.message{
+    margin-left: 20px;
+    font-size: large;
+    font-weight: 500;
+    color: rgba(34, 13, 130, 0.8);
+    flex: 1;
+}
+
+.deleteIcon{
+    position: absolute;
+    right: 1px;
+    top:0px
+}
+.crossBtn{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    color: white;
+    background-color: rgb(39, 190, 26);
+    padding:1px ;
+    text-align: center;
+    cursor: pointer;
+    margin-left: 10px;
+  }

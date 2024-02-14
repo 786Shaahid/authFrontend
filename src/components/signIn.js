@@ -6,6 +6,9 @@ import { navStyle } from "./navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { signinUser } from "../redux/reducers/userReducer";
 import { useState } from "react";
+import { ErrorMessageShow } from "../utility/messages/errorMessage";
+// import { Loader } from "../utility/Loder/loader";
+// import { Loader } from "../utility/Loder/loader";
 
 export const SignInPage = () => {
   const dispatch = useDispatch();
@@ -45,13 +48,13 @@ export const SignInPage = () => {
   };
   return (
     <>
-
       {
-        (error && (<div className="notification_box"><h4 >{error}</h4> </div>)) || (message && (<div className="notification_box"><h4 >{error}</h4> </div>))
+        (error && <ErrorMessageShow error={error}/>) 
 
       }
 
-      <div className="container color_blue">
+      {/* <div className="container color_blue"> */}
+      <div className={`container color_blue ${error ? "disabled":""}`}>
         <h1>SignIn </h1>
         <form onSubmit={handleSubmit}>
           <label>Enter Your Email </label>

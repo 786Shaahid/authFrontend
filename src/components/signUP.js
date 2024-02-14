@@ -5,6 +5,8 @@ import { navStyle } from "./navbar";
 import {  useState } from "react";
 import {  signupUser } from "../redux/reducers/userReducer";
 import { useDispatch ,useSelector} from "react-redux";
+import { ErrorMessageShow } from "../utility/messages/errorMessage";
+// import { Loader } from "../utility/Loder/loader";
 // import axios from "axios";
 
 export const SingUpPage = () => {
@@ -35,11 +37,10 @@ export const SingUpPage = () => {
 
   return (
     <>
-    
-    <div className="notification_box">
-     <h4 >{error}</h4>
-    </div>
-      <div className="container color_blue">
+       {
+        (error && <ErrorMessageShow error={error}/>)
+       }
+       <div className={`container color_blue ${error ? "disabled":''}`}>
         <h1>SignUp </h1>
         <form onSubmit={handleFormData}>
           <label>Enter Your Name</label>

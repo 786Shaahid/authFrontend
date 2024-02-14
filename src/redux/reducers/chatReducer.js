@@ -39,7 +39,7 @@ import {  createSlice } from "@reduxjs/toolkit"
                 },
                 // Add a reducer to handle receiving messages from Socket.io
              friendInformation:(state,action)=>{
-
+                    
              },
 
              receiveMessage: (state, action) => {

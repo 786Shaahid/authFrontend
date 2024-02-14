@@ -1,0 +1,9 @@
+.loader_container{  
+    background-color: rgb(240, 240, 229);
+    position: fixed;
+    transition: width 1s ease;
+    top: -8px;
+    left: 0px;
+    height: 1px;
+    z-index: 2;
+}
