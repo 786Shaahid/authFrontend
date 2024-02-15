@@ -134,9 +134,10 @@ nav {
   cursor: pointer;
 }
 
-a {
+.social_auth {
   color: white;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .profile_img {

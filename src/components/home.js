@@ -19,6 +19,8 @@ export const Home = () => {
 
   return (
     <>
+      
+
       <div className="suggestion_box">
         {users.map((user, index) => (
           <div className="suggestion_friend_box" key={index}>

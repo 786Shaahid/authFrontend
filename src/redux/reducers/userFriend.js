@@ -198,7 +198,7 @@ const friendSlice= createSlice({
           },
           [removeFriend.rejected]:(state,action)=>{
             console.log('removefriend-reject',action.paylaod);
-            state.error="Something Went Wrong";
+            state.error="";
             state.message='';
             state.pending=false;
           },

@@ -96,8 +96,29 @@ export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithVa
  }
   })
 
+  /** 6.  GOOOGEL AUTHENTICATION */
+export const googleAuth=createAsyncThunk('/auth/googleAuth',async({rejectWithValue,fulfillWithValue})=>{
+      try {
+             const response= await axios.get('/api/users/auth/google');
+             console.log(response);
+             return fulfillWithValue(response.data);
+      } catch (error) {
+          console.log(error);
+        return rejectWithValue(error.data);        
+      }
 
+})
+  /** 7.  GOOOGEL AUTHENTICATION */
+export const facebookAuth=createAsyncThunk('auth/facebookAuth',async(data,{rejectWithValue,fulfillWithValue})=>{
+      try {
+             const response= await axios.get('/api/users/auth/facebook');
+             return fulfillWithValue(response.data);
+      } catch (error) {
+        console.log(error);
+        return rejectWithValue(error.data)        
+      }
 
+})
 
 export const authSlice = createSlice({
   name: "auth",
@@ -248,7 +269,49 @@ export const authSlice = createSlice({
       state.error="Something Went Wrong !";
       state.message='';
       state.loading=false;
-    }
+    },
+
+    // GOOOGLE AUTHENTICATION
+   [googleAuth.pending]:(state)=>{
+      state.error='';
+      state.message='';
+      state.loading=true;
+   },
+   [googleAuth.fulfilled]:(state,action)=>{
+    console.log('google-fullfilled',action.payload);
+       state.loading=false;
+       state.message="Login Successfully";
+       state.error='';
+
+   },
+   [googleAuth.rejected]:(state,action)=>{
+      console.log("google-reject",action.payload);
+      state.loading=false;
+      state.message='';
+      state.error="Something Went Wrong";
+   },
+    // FACEBOOK AUTHENTICATION
+   [facebookAuth.pending]:(state)=>{
+      state.error='';
+      state.message='';
+      state.loading=true;
+   },
+   [facebookAuth.fulfilled]:(state,action)=>{
+    console.log('facebook-fullfilled',action.payload);
+       state.loading=false;
+       state.message="Login Successfully";
+       state.error='';
+
+   },
+   [facebookAuth.rejected]:(state,action)=>{
+      console.log("facebook-reject",action.payload);
+      state.loading=false;
+      state.message='';
+      state.error=action.payload.error;
+   }
+
+
+
   },
 });
 export const authReducer = authSlice.reducer;

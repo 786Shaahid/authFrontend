@@ -4,7 +4,7 @@ import { TfiEmail } from "react-icons/tfi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { signinUser } from "../redux/reducers/userReducer";
+import { facebookAuth, googleAuth, signinUser } from "../redux/reducers/userReducer";
 import { useState } from "react";
 import { ErrorMessageShow } from "../utility/messages/errorMessage";
 // import { Loader } from "../utility/Loder/loader";
@@ -17,7 +17,7 @@ export const SignInPage = () => {
   const refreshToken = useSelector(state => state.authReducer.refreshToken);
   // console.log(accessToken,"---",refreshToken);
   const error = useSelector(state => state.authReducer.error);
-  const message = useSelector(state => state.authReducer.message);
+  // const message = useSelector(state => state.authReducer.message);
 
 
   const [user, setUser] = useState({
@@ -49,7 +49,7 @@ export const SignInPage = () => {
   return (
     <>
       {
-        (error && <ErrorMessageShow error={error}/>) 
+        (error && <ErrorMessageShow />) 
 
       }
 
@@ -92,22 +92,16 @@ export const SignInPage = () => {
           <span className="margin_right">
             <FcGoogle />
           </span>
-          <span>
-            <a href="https://authbackend-74z0.onrender.com/api/users/auth/google">
-              {" "}
+          <span className="social_auth" onClick={()=>dispatch(googleAuth())}>
               Sign in with google
-            </a>
           </span>
         </div>
         <div className="logBtn">
           <span className="margin_right">
             <FaFacebook />
           </span>
-          <span>
-            <a href="https://authbackend-74z0.onrender.com/api/users/auth/facebook">
-              {" "}
+          <span className="social_auth" onClick={()=>dispatch(facebookAuth())}>
               Sign in with Facebook
-            </a>
           </span>
         </div>
         <div className="logBtn">

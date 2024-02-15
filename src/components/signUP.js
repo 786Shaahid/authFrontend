@@ -2,55 +2,55 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
-import {  useState } from "react";
-import {  signupUser } from "../redux/reducers/userReducer";
-import { useDispatch ,useSelector} from "react-redux";
+import { useState } from "react";
+import { facebookAuth, googleAuth, signupUser } from "../redux/reducers/userReducer";
+import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessageShow } from "../utility/messages/errorMessage";
 // import { Loader } from "../utility/Loder/loader";
 // import axios from "axios";
 
 export const SingUpPage = () => {
-  const dispatch=useDispatch();
-  const navigate=useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // const userData= useSelector(state=>state.authReducer.userSignup);
-  
-  const error= useSelector(state=>state.authReducer.error);
+
+  const error = useSelector(state => state.authReducer.error);
   // console.log(error);
 
-    const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  
-  
-  const handleFormData= async(e)=>{
+
+
+  const handleFormData = async (e) => {
     e.preventDefault();
-      // console.log(error);
-      // setUserData(use)
-      const result= await dispatch(signupUser(userData));
-      if(result.payload.success){
-        navigate("/signin");
-      }
-      setUserData({});
-   }
+    // console.log(error);
+    // setUserData(use)
+    const result = await dispatch(signupUser(userData));
+    if (result.payload.success) {
+      navigate("/signin");
+    }
+    setUserData({});
+  }
 
   return (
     <>
-       {
-        (error && <ErrorMessageShow error={error}/>)
+      {
+        (error && <ErrorMessageShow />)
        }
-       <div className={`container color_blue ${error ? "disabled":''}`}>
+      <div className={`container color_blue ${error ? "disabled" : ''}`}>
         <h1>SignUp </h1>
         <form onSubmit={handleFormData}>
           <label>Enter Your Name</label>
           <br />
-          <input type="text" name="name" value={userData.name || ""} placeholder="Enter your name" onChange={(event)=>setUserData({...userData,name:event.target.value})} />
+          <input type="text" name="name" value={userData.name || ""} placeholder="Enter your name" onChange={(event) => setUserData({ ...userData, name: event.target.value })} />
           <br />
           <br />
           <label>Enter Your Email </label>
           <br />
-          <input type="text" name="email" value={userData.email || ""} placeholder="Enter your email" onChange={e=>setUserData({...userData,email:e.target.value})}/>
+          <input type="text" name="email" value={userData.email || ""} placeholder="Enter your email" onChange={e => setUserData({ ...userData, email: e.target.value })} />
           <br />
           <br />
           <label>Enter Your Password </label>
@@ -58,9 +58,9 @@ export const SingUpPage = () => {
           <input
             type="text"
             name="password"
-            value={userData.password||""}
+            value={userData.password || ""}
             placeholder="Enter your password"
-            onChange={e=>setUserData({...userData,password:e.target.value})}
+            onChange={e => setUserData({ ...userData, password: e.target.value })}
           />
           <br />
           <br />
@@ -75,22 +75,16 @@ export const SingUpPage = () => {
           <span className="margin_right">
             <FcGoogle />
           </span>
-          <span>
-            <a href="https://authbackend-74z0.onrender.com/api/users/auth/google">
-            
-              Sign in with google
-            </a>
+          <span className="social_auth" onClick={() => dispatch(googleAuth())}>
+            Sign in with google
           </span>
         </div>
         <div className="logBtn">
           <span className="margin_right">
             <FaFacebook />
           </span>
-          <span>
-            <a href="https://authbackend-74z0.onrender.com/api/users/auth/facebook">
-              
-              Sign in with Facebook
-            </a>
+          <span className="social_auth" onClick={() =>  dispatch(facebookAuth())}>
+            Sign in with Facebook
           </span>
         </div>
         <div className="seperator_line">
