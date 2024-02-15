@@ -18,7 +18,7 @@ export const ErrorMessageShow=()=>{
     {
       error && (<div className="notification_box">
      <span>{error ? error :"Something went wrong !"}</span>
-    <span className="crossBtn" onClick={handleClick}>&#10006;</span>
+    <span className="cross_Btn" onClick={handleClick}>&#10006;</span>
     </div>)
     }
         </>

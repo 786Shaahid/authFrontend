@@ -17,12 +17,12 @@
     padding: 0 5px;
   }
   
-  .crossBtn{
+  .cross_Btn{
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
     color: white;
-    background-color: brown;
+    background-color: rgb(164, 21, 21);
     padding:1px ;
     text-align: center;
     cursor: pointer;
