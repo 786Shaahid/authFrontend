@@ -4,14 +4,11 @@ import { CiSquareRemove } from "react-icons/ci";
 import { chatActions } from "../redux/reducers/chatReducer";
 import { useEffect, useState ,useMemo} from "react";
 import {io} from "socket.io-client"
- // import useSocket from "../utility/useSocket.js";
 import { useRef } from "react";
 
 export const Chat = ({ friendId }) => {
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  // console.log("m essages", messages);
-  // const socket=useSocket();
   const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend);
   const userData = useSelector(state => state.authReducer.userData);
   const dispatch = useDispatch();
@@ -36,7 +33,6 @@ export const Chat = ({ friendId }) => {
     socket.emit('joinRoom', roomId); 
     socket.on("chat", (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
-      // console.log(messages);
       console.log("data from server",data);
     })
     // Clean up the socket connection on component unmount
@@ -49,7 +45,6 @@ export const Chat = ({ friendId }) => {
     e.preventDefault();
     if (inputMessage.trim() !== '') {
       socket.emit('sendMessage', { roomId: roomId, userId:userData._id, message: inputMessage });
-      // setMessages((prevMessages)=>[...prevMessages,{message:inputMessage,type:'client'}])
       setInputMessage("");
     }
   }

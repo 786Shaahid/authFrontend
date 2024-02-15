@@ -7,7 +7,6 @@ export const SignInWithEmail = () => {
   const [inputEmail, setInputEmail] = useState("");
   const [otp, setOtp] = useState("");
   let isMailSend = useSelector((state) => state.authReducer.isMailSend);
-  // let emailOtp=useSelector(state=> state.signinWithEmail);
   const dispatch = useDispatch();
   const navigate=useNavigate();
 
@@ -60,12 +59,7 @@ export const SignInWithEmail = () => {
             </form>
           </>
         )}
-
-        {/* <div className="seperator_line">
-          <span className="line"> </span>{" "}
-          <span className="margin_right margin_left">Check Email</span>
-          <span className="line"> </span>
-        </div> */}
+       
       </div>
     </>
   );

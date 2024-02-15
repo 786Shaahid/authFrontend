@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
 import { getAll, userAtions } from "../redux/reducers/userReducer";
 import { addFriend, removeFriend } from "../redux/reducers/userFriend";
 import { useEffect } from "react";

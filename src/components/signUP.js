@@ -6,16 +6,11 @@ import { useState } from "react";
 import { facebookAuth, googleAuth, signupUser } from "../redux/reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessageShow } from "../utility/messages/errorMessage";
-// import { Loader } from "../utility/Loder/loader";
-// import axios from "axios";
 
 export const SingUpPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const userData= useSelector(state=>state.authReducer.userSignup);
-
   const error = useSelector(state => state.authReducer.error);
-  // console.log(error);
 
   const [userData, setUserData] = useState({
     name: "",
@@ -26,8 +21,6 @@ export const SingUpPage = () => {
 
   const handleFormData = async (e) => {
     e.preventDefault();
-    // console.log(error);
-    // setUserData(use)
     const result = await dispatch(signupUser(userData));
     if (result.payload.success) {
       navigate("/signin");

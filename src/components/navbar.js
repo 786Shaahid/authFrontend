@@ -1,27 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
-// import { MdNotificationsActive } from "react-icons/md";
 import { logoutUser } from "../redux/reducers/userReducer";
-// import { Loader } from "../utility/Loder/loader.js";
 
 export const Navbar = () => {
   const user= useSelector(state =>state.authReducer.userData );
   const accessToken=useSelector(state=>state.authReducer.accessToken);
-  // const loading=useSelector(state=>state.authReducer.loading);
-
-  // console.log("accessToken",accessToken);
   const dispatch=useDispatch();
-  // console.log(user);
-const handleLogout= ()=>{
+
+  const handleLogout= ()=>{
    dispatch(logoutUser(accessToken));
-  // console.log(res);
-  // console.log("cliked");
 }
 
   return (
     <>
-       
-
       <nav>
               <div className="navProfile">
               <div className="navDiv">
@@ -53,32 +44,8 @@ const handleLogout= ()=>{
                   Logout
               </div>
               </span>
-                {/* <MdNotificationsActive size="30px"/> */}
-                {/* <> */}
               </div>
             </div>
-          {/* : (
-              <>
-              <ul className="navBoxAuth">
-              <li>
-                <NavLink to="/signup" style={navStyle}>
-                  Sign up
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/signin" style={navStyle}>
-                  Sign in
-                </NavLink>
-              </li>
-
-              <li>
-                <NavLink to="/signinbyemail" style={navStyle}>
-                  Sign in with email
-                </NavLink>
-              </li>
-        </ul>
-            </>
-          )} */}
       </nav>
       <Outlet />
     </>

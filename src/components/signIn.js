@@ -7,17 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { facebookAuth, googleAuth, signinUser } from "../redux/reducers/userReducer";
 import { useState } from "react";
 import { ErrorMessageShow } from "../utility/messages/errorMessage";
-// import { Loader } from "../utility/Loder/loader";
-// import { Loader } from "../utility/Loder/loader";
 
 export const SignInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accessToken = useSelector(state => state.authReducer.accessToken);
   const refreshToken = useSelector(state => state.authReducer.refreshToken);
-  // console.log(accessToken,"---",refreshToken);
   const error = useSelector(state => state.authReducer.error);
-  // const message = useSelector(state => state.authReducer.message);
 
 
   const [user, setUser] = useState({
@@ -25,15 +21,7 @@ export const SignInPage = () => {
     password: "",
   });
 
-  // const getResult = async (user)=>{
-
-  //   const resultAll=await  dispatch(getAll());
-
-  //   return {result ,resultAll}
-  // }
-
   const handleSubmit = async (e) => {
-    // console.log(user);
     try {
       e.preventDefault();
       const result = await dispatch(signinUser(user));
@@ -52,8 +40,6 @@ export const SignInPage = () => {
         (error && <ErrorMessageShow />) 
 
       }
-
-      {/* <div className="container color_blue"> */}
       <div className={`container color_blue ${error ? "disabled":""}`}>
         <h1>SignIn </h1>
         <form onSubmit={handleSubmit}>
