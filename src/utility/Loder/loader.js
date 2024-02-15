@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import css from './loader.css';
+import  './loader.css';
 import { useEffect, useState } from 'react';
 
 export const Loader=()=>{
