@@ -4,13 +4,13 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
 import { useState } from "react";
 import { facebookAuth, googleAuth, signupUser } from "../redux/reducers/userReducer";
-import { useDispatch, useSelector } from "react-redux";
-import { ErrorMessageShow } from "../utility/messages/errorMessage";
+import { useDispatch ,useSelector} from "react-redux";
+// import { ErrorMessageShow } from "../utility/messages/errorMessage";
 
 export const SingUpPage = () => {
+  const error = useSelector(state => state.authReducer.error);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const error = useSelector(state => state.authReducer.error);
 
   const [userData, setUserData] = useState({
     name: "",
@@ -30,9 +30,7 @@ export const SingUpPage = () => {
 
   return (
     <>
-      {
-        (error && <ErrorMessageShow />)
-       }
+     
       <div className={`container color_blue ${error ? "disabled" : ''}`}>
         <h1>SignUp </h1>
         <form onSubmit={handleFormData}>

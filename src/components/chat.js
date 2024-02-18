@@ -33,7 +33,7 @@ export const Chat = ({ friendId }) => {
     socket.emit('joinRoom', roomId); 
     socket.on("chat", (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
-      console.log("data from server",data);
+      // console.log("data from server",data);
     })
     // Clean up the socket connection on component unmount
     return () => {

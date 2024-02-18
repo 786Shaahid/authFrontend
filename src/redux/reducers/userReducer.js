@@ -50,8 +50,10 @@ export const sendMail = createAsyncThunk(
   async (data, { rejectWithValue,fulfillWithValue }) => {
     try {
       const response = await axios.post("/api/users/sendmail", data);
-      return fulfillWithValue(response);
+      // console.log(response.data);
+      return fulfillWithValue(response.data);
     } catch (err) {
+      console.log(err);
      return rejectWithValue(err);
     }
   }
@@ -62,7 +64,7 @@ export const sendOtpEmail = createAsyncThunk(
   async (data, { rejectWithValue ,fulfillWithValue}) => {
     try {
       const response = await axios.post("/api/users/singinotp", data);
-      console.log(response.data);
+      // console.log(response.data);
       return fulfillWithValue(response.data);
     } catch (err) {
      return rejectWithValue(err);
@@ -82,17 +84,17 @@ export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithVa
 
  /**5. Logout User */
   export const logoutUser= createAsyncThunk('auth/logout',async(data,{fulfillWithValue,rejectWithValue})=>{
-    console.log(data);
+    // console.log(data);
     try {
    const response= await axios.get('/api/users/logout',{
     headers:{
       Authorization: `Bearer ${data}`
    }
     });
-    console.log(response);
-    fulfillWithValue(response.data);
+    // console.log(response);
+  return  fulfillWithValue(response.data);
  } catch (error) {
-  rejectWithValue(error);
+  return rejectWithValue(error);
  }
   })
 
@@ -135,11 +137,7 @@ export const authSlice = createSlice({
             state.users[index]=userCopy;
           }
          },
-         isEmailSend:(state,action)=>{
-          console.log(action.payload);
-            state.isMailSend= !action.payload
-         },
-         toggleError:(state)=>{
+          toggleError:(state)=>{
             state.error="";  
             state.loading=false; 
          },
@@ -159,15 +157,15 @@ export const authSlice = createSlice({
       state.error='';
     },
     [signupUser.fulfilled]: (state, action) => {
-      console.log("singup-fullfil-31", action.payload);
+      // console.log("singup-fullfil-31", action.payload);
       state.loading = false;
       state.error='';
       state.message = "User Signup Successfully !";
     },
     [signupUser.rejected]: (state, action) => {
+      // console.log("singup-reject",action.payload);
       state.loading = false;
       state.message="";
-      console.log("singup-reject",action.payload);
       state.error=  action.payload.status===400? action.payload.data.message : action.payload.statusText
     },
     // 2. signin
@@ -186,7 +184,7 @@ export const authSlice = createSlice({
       state.error=''
     },
     [signinUser.rejected]: (state, action) => {
-      console.log('signin-reject',action.payload);
+      // console.log('signin-reject',action.payload);
       state.loading=false
       state.message='';
       state.error=  action.payload.status===400? action.payload.data.message : action.payload.statusText;
@@ -200,17 +198,17 @@ export const authSlice = createSlice({
       state.message='';
     },
     [sendMail.fulfilled]: (state, action) => {
-      state.loading = false;
+      // console.log("filfilled", action.payload);
       state.isMailSend = !state.isMailSend;
-      state.message="OTP Send To Registered Email !";
       state.error='';
-      console.log("filfilled", action.payload);
+      state.loading = false;
+      state.message="OTP Send To Registered Email !";
     },
     [sendMail.rejected]: (state, action) => {
-      state.error = action.payload.error;
+      // console.log("mail send pending", action.payload);
+      state.error = action.payload?.response?.data?.error;
       state.message='';
       state.loading=false;
-      console.log("mail send pending", action.payload);
     },
     // 5.singin with otp
     [sendOtpEmail.pending]: (state) => {
@@ -219,19 +217,19 @@ export const authSlice = createSlice({
       state.error='';
     },
     [sendOtpEmail.fulfilled]: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload.data.userData);
       state.loading = false;
-      state.error='';
       state.accessToken = action.payload.data.accessToken;
       state.refreshToken=action.payload.data.refreshToken;
       state.userData=action.payload.data.userData;
       state.message="Login Successfully !";
+      state.error=''
     },
     [sendOtpEmail.rejected]: (state, action) => {
-      state.error = action.payload.error;
+      // console.log('send otp-reject',action.payload);
+      state.error = action.payload.response?.data?.error;
       state.loading=false;
       state.message=''
-      console.log(action.payload);
     },
    // 6. gell all friend 
     [getAll.pending]: (state) => {
@@ -245,7 +243,7 @@ export const authSlice = createSlice({
       state.error='';
     },
     [getAll.rejected]: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.error = "Something Went Wrong !";
       state.loading=false;
       state.message='';
@@ -258,14 +256,14 @@ export const authSlice = createSlice({
       
     },
     [logoutUser.fulfilled]:(state,action)=>{
+      //  console.log(action);
        state.userData="";
        state.message="Logout Successfully !";
        state.error='';
        state.loading=false;
-       console.log(action);
     },
     [logoutUser.rejected]:(state,action)=>{
-      console.log(action.payload);
+      // console.log(action.payload);
       state.error="Something Went Wrong !";
       state.message='';
       state.loading=false;
@@ -278,14 +276,14 @@ export const authSlice = createSlice({
       state.loading=true;
    },
    [googleAuth.fulfilled]:(state,action)=>{
-    console.log('google-fullfilled',action.payload);
+    // console.log('google-fullfilled',action.payload);
        state.loading=false;
        state.message="Login Successfully";
        state.error='';
 
    },
    [googleAuth.rejected]:(state,action)=>{
-      console.log("google-reject",action.payload);
+      // console.log("google-reject",action.payload);
       state.loading=false;
       state.message='';
       state.error="Something Went Wrong";
@@ -297,14 +295,14 @@ export const authSlice = createSlice({
       state.loading=true;
    },
    [facebookAuth.fulfilled]:(state,action)=>{
-    console.log('facebook-fullfilled',action.payload);
+    // console.log('facebook-fullfilled',action.payload);
        state.loading=false;
        state.message="Login Successfully";
        state.error='';
 
    },
    [facebookAuth.rejected]:(state,action)=>{
-      console.log("facebook-reject",action.payload);
+      // console.log("facebook-reject",action.payload);
       state.loading=false;
       state.message='';
       state.error=action.payload.error;

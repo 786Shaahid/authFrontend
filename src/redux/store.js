@@ -11,9 +11,8 @@ store= configureStore({
         friendReducer,
         chatReducer
     }),
-    // middleware:(getDefaultMiddleware)=>{
-    //     getDefaultMiddleware({
-    //         serializableCheck:false
-    //     })
-    // }
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })

@@ -6,7 +6,7 @@ import { navStyle } from "./navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { facebookAuth, googleAuth, signinUser } from "../redux/reducers/userReducer";
 import { useState } from "react";
-import { ErrorMessageShow } from "../utility/messages/errorMessage";
+// import { ErrorMessageShow } from "../utility/messages/errorMessage";
 
 export const SignInPage = () => {
   const dispatch = useDispatch();
@@ -36,10 +36,7 @@ export const SignInPage = () => {
   };
   return (
     <>
-      {
-        (error && <ErrorMessageShow />) 
-
-      }
+      
       <div className={`container color_blue ${error ? "disabled":""}`}>
         <h1>SignIn </h1>
         <form onSubmit={handleSubmit}>
