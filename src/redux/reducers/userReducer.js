@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL } from "../../utility/connection.js";
+
 
 /**1. initialize user*/
 const initialState = {
@@ -20,7 +22,7 @@ export const signupUser = createAsyncThunk(
   "auth/signupUser",
   async (user , { rejectWithValue ,fulfillWithValue}) => {
     try {
-      const response = await axios.post("/api/users/signup", user);
+      const response = await axios.post(`${BASE_URL}/api/users/signup`, user);
       // console.log("response",response.data);
       return fulfillWithValue(response.data); 
     } catch (err) {
@@ -35,7 +37,7 @@ export const signinUser = createAsyncThunk(
   "auth/signinUser",
   async (user={}, {fulfillWithValue, rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/users/signin", user);
+      const response = await axios.post(`${BASE_URL}/api/users/signin`, user);
       return fulfillWithValue(response.data);
     } catch (err) {
       console.log(err.response);
@@ -49,7 +51,7 @@ export const sendMail = createAsyncThunk(
   "auth/sendMail",
   async (data, { rejectWithValue,fulfillWithValue }) => {
     try {
-      const response = await axios.post("/api/users/sendmail", data);
+      const response = await axios.post(`${BASE_URL}/api/users/sendmail`, data);
       // console.log(response.data);
       return fulfillWithValue(response.data);
     } catch (err) {
@@ -63,7 +65,7 @@ export const sendOtpEmail = createAsyncThunk(
   "auth/sendOtp",
   async (data, { rejectWithValue ,fulfillWithValue}) => {
     try {
-      const response = await axios.post("/api/users/singinotp", data);
+      const response = await axios.post(`${BASE_URL}/api/users/singinotp`, data);
       // console.log(response.data);
       return fulfillWithValue(response.data);
     } catch (err) {
@@ -75,7 +77,7 @@ export const sendOtpEmail = createAsyncThunk(
 export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithValue,rejectWithValue}) => {
   //  console.log(data);
   try {
-    const response = await axios.post("/api/users/getall",{id:data});
+    const response = await axios.post(`${BASE_URL}/api/users/getall`,{id:data});
     return fulfillWithValue(response.data);
   } catch (err) {
    return rejectWithValue(err);
@@ -86,7 +88,7 @@ export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithVa
   export const logoutUser= createAsyncThunk('auth/logout',async(data,{fulfillWithValue,rejectWithValue})=>{
     // console.log(data);
     try {
-   const response= await axios.get('/api/users/logout',{
+   const response= await axios.get(`${BASE_URL}/api/users/logout`,{
     headers:{
       Authorization: `Bearer ${data}`
    }
@@ -101,7 +103,7 @@ export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithVa
   /** 6.  GOOOGEL AUTHENTICATION */
 export const googleAuth=createAsyncThunk('/auth/googleAuth',async({rejectWithValue,fulfillWithValue})=>{
       try {
-             const response= await axios.get('/api/users/auth/google');
+             const response= await axios.get(`${BASE_URL}/api/users/auth/google`);
              console.log(response);
              return fulfillWithValue(response.data);
       } catch (error) {
@@ -113,7 +115,7 @@ export const googleAuth=createAsyncThunk('/auth/googleAuth',async({rejectWithVal
   /** 7.  GOOOGEL AUTHENTICATION */
 export const facebookAuth=createAsyncThunk('auth/facebookAuth',async(data,{rejectWithValue,fulfillWithValue})=>{
       try {
-             const response= await axios.get('/api/users/auth/facebook');
+             const response= await axios.get(`${BASE_URL}/api/users/auth/facebook`);
              return fulfillWithValue(response.data);
       } catch (error) {
         console.log(error);
