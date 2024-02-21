@@ -25,7 +25,7 @@ export const SignInPage = () => {
     try {
       e.preventDefault();
       const result = await dispatch(signinUser(user));
-      if (result.payload.success) {
+      if (result.payload?.success) {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         navigate('/');
