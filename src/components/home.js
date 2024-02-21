@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getAll, userAtions } from "../redux/reducers/userReducer";
+import { getAll, userActions } from "../redux/reducers/userReducer";
 import { addFriend, removeFriend } from "../redux/reducers/userFriend";
 import { useEffect } from "react";
 import { chatActions } from "../redux/reducers/chatReducer";
@@ -43,7 +43,7 @@ export const Home = () => {
                       })
                     );
                     dispatch(
-                      userAtions.updateBtnInSuggestionFriend({
+                      userActions.updateBtnInSuggestionFriend({
                         user,
                         friendshipID: user.friendship?._id,
                         index,
@@ -67,7 +67,7 @@ export const Home = () => {
                       })
                     );
                     dispatch(
-                      userAtions.updateBtnInSuggestionFriend({
+                      userActions.updateBtnInSuggestionFriend({
                         user,
                         friendship: user.friendship?._id,
                         index,
@@ -76,7 +76,7 @@ export const Home = () => {
                   }}
                   className="friBtn"
                 >
-                  Add+
+                  Send 
                 </button>
               )}
             </div>

@@ -1,7 +1,7 @@
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL } from "../../utility/connection..js";
+import { BASE_URL } from "../../utility/connection";
 
 
 const initialState={
@@ -17,6 +17,7 @@ export const addFriend= createAsyncThunk('friend/addFriend',async (data,{fulfill
   // console.log(data);
          try{
            const friendAdded= await axios.post(`${BASE_URL}/api/friends/addfriend`,{
+          //  const friendAdded= await axios.post(`/api/friends/addfriend`,{
             userId:data.userId,
             friendId:data.friendId
              },{
@@ -24,10 +25,11 @@ export const addFriend= createAsyncThunk('friend/addFriend',async (data,{fulfill
                Authorization: `Bearer ${data.token}`
             }
             });
-            // console.log(friendAdded);
+            console.log(friendAdded);
             return fulfillWithValue(friendAdded);
           }catch(err){
-  rejectWithValue(err.response.data);
+            console.log(err);
+            return rejectWithValue(err);
          }
 })
 
@@ -36,6 +38,7 @@ export const getAllFriendRequest= createAsyncThunk('friend/getAllFriendRequest',
   // console.log(data);
          try{
            const friendRequest= await axios.get(`${BASE_URL}/api/friends/getAllFriendRequest`,{
+          //  const friendRequest= await axios.get(`/api/friends/getAllFriendRequest`,{
             headers:{
                Authorization: `Bearer ${data}`
             }
@@ -52,6 +55,7 @@ export const acceptFriend=createAsyncThunk('friend/acceptFriend',async(data,{ful
   // console.log(data);
    try {
      const response= await axios.post(`${BASE_URL}/api/friends/acceptfriend`,{id:data.id},{
+    //  const response= await axios.post(`/api/friends/acceptfriend`,{id:data.id},{
       headers:{
         Authorization: `Bearer ${data.token}`
      }
@@ -68,12 +72,13 @@ export const removeFriend=createAsyncThunk('friend/removeFriend',async(data,{ful
   // console.log(data);
    try {
      const response= await axios.post(`${BASE_URL}/api/friends/removefriend`,{id:data.id},{
+    //  const response= await axios.post(`/api/friends/removefriend`,{id:data.id},{
       headers:{
         Authorization: `Bearer ${data.token}`
      }
      });
     //  console.log(response.data);
-     return fulfillWithValue( response.data);
+     return fulfillWithValue(response.data);
    } catch (error) {
     return rejectWithValue(error)
    }
@@ -84,6 +89,7 @@ export const friendList=createAsyncThunk('friend/friendList',async(data,{fulfill
   // console.log(data);
    try {
      const response= await axios.post(`${BASE_URL}/api/friends/friendlist`,{id:data.id},{
+    //  const response= await axios.post(`/api/friends/friendlist`,{id:data.id},{
       headers:{
         Authorization: `Bearer ${data.token}`
      }
@@ -123,8 +129,8 @@ const friendSlice= createSlice({
             state.message="Request send successfully";
           },
           [addFriend.rejected]:(state,action)=>{
-            // console.log('addfriend reject',action.paylaod);
-            state.error=action.paylaod.data;
+            console.log('addfriend reject',action.paylaod);
+            state.error=action.paylaod?.data;
             state.pending=false;
             state.message='';
           },
@@ -137,14 +143,14 @@ const friendSlice= createSlice({
           [getAllFriendRequest.fulfilled]:(state,action)=>{
             // console.log('getallfriendrequest-fullfilled',action.payload.data);
              state.pending=false;
-             state.friendRequestList=action.payload.data
+             state.friendRequestList=action.payload?.data
              state.error='';
              state.message=""; 
             
           },
           [getAllFriendRequest.rejected]:(state,action)=>{
             // console.log('getallfriendrequest-reject',action.paylaod);
-            state.error=action.paylaod.data.error;
+            state.error=action.paylaod?.data?.error;
             state.message='';
             state.pending='';
           },

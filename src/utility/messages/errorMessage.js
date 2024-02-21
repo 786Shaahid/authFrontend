@@ -1,6 +1,6 @@
 import { useDispatch,useSelector } from 'react-redux';
 import './errorMessage.css';
-import { userAtions } from '../../redux/reducers/userReducer';
+import { userActions } from '../../redux/reducers/userReducer';
 
 export const ErrorMessageShow=()=>{
     const errorUser= useSelector(state=>state.authReducer.error);
@@ -8,7 +8,7 @@ export const ErrorMessageShow=()=>{
     const error= errorUser || errorFriend;
     const dispatch=useDispatch();
     const handleClick=()=>{
-        dispatch(userAtions.toggleError());
+        dispatch(userActions.toggleError());
     }
 
 

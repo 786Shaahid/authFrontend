@@ -174,7 +174,7 @@ nav {
   pointer-events: none;
 }
 .suggestion_friend_box {
-  width: 45vw;
+  min-width: 45vw;
   height: 35px;
   border: 1px solid rgb(36, 26, 11);
   display: flex;
@@ -186,7 +186,7 @@ nav {
   margin: 5px auto;
 }
 .suggestion {
-  width: 15vw;
+  min-width: 15vw;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -204,6 +204,7 @@ nav {
   font-weight: 550;
   color: rgb(10, 125, 15);
   border-radius: 15px;
+  
 }
 .friBtn:active {
   background-color: rgb(15, 159, 36);

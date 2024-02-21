@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASE_URL } from "../../utility/connection.js";
+import { BASE_URL } from "../../utility/connection";
 
 
 /**1. initialize user*/
@@ -13,7 +13,11 @@ const initialState = {
   refreshToken:"",
   userData:{},
   loading: false,
-  users: []
+  users: [],
+  userloginData:{
+    email:"",
+    password:"",
+  }
 };
 
 // create action
@@ -22,6 +26,7 @@ export const signupUser = createAsyncThunk(
   "auth/signupUser",
   async (user , { rejectWithValue ,fulfillWithValue}) => {
     try {
+      // const response = await axios.post(`/api/users/signup`, user);
       const response = await axios.post(`${BASE_URL}/api/users/signup`, user);
       // console.log("response",response.data);
       return fulfillWithValue(response.data); 
@@ -37,6 +42,7 @@ export const signinUser = createAsyncThunk(
   "auth/signinUser",
   async (user={}, {fulfillWithValue, rejectWithValue }) => {
     try {
+      // const response = await axios.post(`/api/users/signin`, user);
       const response = await axios.post(`${BASE_URL}/api/users/signin`, user);
       return fulfillWithValue(response.data);
     } catch (err) {
@@ -51,6 +57,7 @@ export const sendMail = createAsyncThunk(
   "auth/sendMail",
   async (data, { rejectWithValue,fulfillWithValue }) => {
     try {
+      // const response = await axios.post(`/api/users/sendmail`, data);
       const response = await axios.post(`${BASE_URL}/api/users/sendmail`, data);
       // console.log(response.data);
       return fulfillWithValue(response.data);
@@ -65,6 +72,7 @@ export const sendOtpEmail = createAsyncThunk(
   "auth/sendOtp",
   async (data, { rejectWithValue ,fulfillWithValue}) => {
     try {
+      // const response = await axios.post(`/api/users/singinotp`, data);
       const response = await axios.post(`${BASE_URL}/api/users/singinotp`, data);
       // console.log(response.data);
       return fulfillWithValue(response.data);
@@ -77,6 +85,7 @@ export const sendOtpEmail = createAsyncThunk(
 export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithValue,rejectWithValue}) => {
   //  console.log(data);
   try {
+    // const response = await axios.post(`/api/users/getall`,{id:data});
     const response = await axios.post(`${BASE_URL}/api/users/getall`,{id:data});
     return fulfillWithValue(response.data);
   } catch (err) {
@@ -89,6 +98,7 @@ export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithVa
     // console.log(data);
     try {
    const response= await axios.get(`${BASE_URL}/api/users/logout`,{
+  //  const response= await axios.get(`/api/users/logout`,{
     headers:{
       Authorization: `Bearer ${data}`
    }
@@ -103,6 +113,7 @@ export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithVa
   /** 6.  GOOOGEL AUTHENTICATION */
 export const googleAuth=createAsyncThunk('/auth/googleAuth',async({rejectWithValue,fulfillWithValue})=>{
       try {
+            //  const response= await axios.get(`/api/users/auth/google`);
              const response= await axios.get(`${BASE_URL}/api/users/auth/google`);
              console.log(response);
              return fulfillWithValue(response.data);
@@ -115,11 +126,12 @@ export const googleAuth=createAsyncThunk('/auth/googleAuth',async({rejectWithVal
   /** 7.  GOOOGEL AUTHENTICATION */
 export const facebookAuth=createAsyncThunk('auth/facebookAuth',async(data,{rejectWithValue,fulfillWithValue})=>{
       try {
+            //  const response= await axios.get(`/api/users/auth/facebook`);
              const response= await axios.get(`${BASE_URL}/api/users/auth/facebook`);
              return fulfillWithValue(response.data);
       } catch (error) {
         console.log(error);
-        return rejectWithValue(error.data)        
+        return rejectWithValue(error)        
       }
 
 })
@@ -128,8 +140,13 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+         userLogin:(state,action)=>{
+            console.log("USER-LOGIN",action.payload);
+            state.userloginData=action.paylaod;
+            // state.userloginData.password=action.payload;
+         },
          updateBtnInSuggestionFriend:(state,action)=>{
-          const {user,friendshipID,index}= action.payload;
+          const {user,friendshipID,index} = action.payload;
           const userCopy={...user}
           if(friendshipID){
             userCopy.friendship="";
@@ -142,6 +159,7 @@ export const authSlice = createSlice({
           toggleError:(state)=>{
             state.error="";  
             state.loading=false; 
+            state.userloginData={};
          },
          messageNullUserSlice:(state)=>{
               state.message="";
@@ -159,16 +177,16 @@ export const authSlice = createSlice({
       state.error='';
     },
     [signupUser.fulfilled]: (state, action) => {
-      // console.log("singup-fullfil-31", action.payload);
+      console.log("singup-fullfil-31", action.payload);
       state.loading = false;
       state.error='';
       state.message = "User Signup Successfully !";
     },
     [signupUser.rejected]: (state, action) => {
-      // console.log("singup-reject",action.payload);
+      console.log("singup-reject",action.payload);
       state.loading = false;
       state.message="";
-      state.error=  action.payload.status===400? action.payload.data.message : action.payload.statusText
+      state.error=  action.payload?.status===400? action.payload?.data.message : action.payload?.statusText
     },
     // 2. signin
     [signinUser.pending]: (state) => {
@@ -189,7 +207,7 @@ export const authSlice = createSlice({
       // console.log('signin-reject',action.payload);
       state.loading=false
       state.message='';
-      state.error=  action.payload.status===400? action.payload.data.message : action.payload.statusText;
+      state.error=  action.payload?.status===400? action.payload?.data.message : action.payload?.statusText
     },
 
     // 3. sending mail
@@ -229,7 +247,7 @@ export const authSlice = createSlice({
     },
     [sendOtpEmail.rejected]: (state, action) => {
       // console.log('send otp-reject',action.payload);
-      state.error = action.payload.response?.data?.error;
+      state.error = action.payload?.response?.data?.error;
       state.loading=false;
       state.message=''
     },
@@ -307,7 +325,7 @@ export const authSlice = createSlice({
       // console.log("facebook-reject",action.payload);
       state.loading=false;
       state.message='';
-      state.error=action.payload.error;
+      state.error=action.payload?.error;
    }
 
 
@@ -315,6 +333,6 @@ export const authSlice = createSlice({
   },
 });
 export const authReducer = authSlice.reducer;
-export const userAtions = authSlice.actions;
+export const userActions = authSlice.actions;
 
 export const tokenSelector = (state) => state.authReducer.token;

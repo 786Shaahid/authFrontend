@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { friendActions } from '../../redux/reducers/userFriend';
-import { userAtions } from '../../redux/reducers/userReducer';
+import { userActions } from '../../redux/reducers/userReducer';
 import   './responseMessage.css';
 import { useDispatch, useSelector } from 'react-redux';
 export const ShowResponse = () => {
@@ -11,13 +11,13 @@ export const ShowResponse = () => {
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(userAtions.messageNullUserSlice());
+        dispatch(userActions.messageNullUserSlice());
         dispatch(friendActions.messageNullFriendSlice());
     }
 
     useEffect(() => {
         setTimeout(() => {
-            dispatch(userAtions.messageNullUserSlice());
+            dispatch(userActions.messageNullUserSlice());
             dispatch(friendActions.messageNullFriendSlice());
         }, 2500)
     });

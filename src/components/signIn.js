@@ -7,15 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { facebookAuth, googleAuth, signinUser } from "../redux/reducers/userReducer";
 import { useState } from "react";
 // import { ErrorMessageShow } from "../utility/messages/errorMessage";
-
+// import { userActions } from "../redux/reducers/userReducer";
 export const SignInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accessToken = useSelector(state => state.authReducer.accessToken);
   const refreshToken = useSelector(state => state.authReducer.refreshToken);
   const error = useSelector(state => state.authReducer.error);
-
-
+  // const userloginData=useSelector(state=>state.authReducer.userloginData);
+  //  console.log(userloginData);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -29,6 +29,9 @@ export const SignInPage = () => {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         navigate('/');
+      }else{
+        setUser({});
+
       }
     } catch (error) {
       console.log(error);
@@ -45,6 +48,7 @@ export const SignInPage = () => {
           <input
             type="text"
             value={user.email || ""}
+            // onChange={(e) => dispatch(userActions.userLogin({...userloginData,email:e.target.value}))}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             name="email"
             placeholder="Enter your email"
@@ -57,12 +61,14 @@ export const SignInPage = () => {
           <input
             type="text"
             name="passport"
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
             value={user.password || ""}
+            // onChange={(e) => dispatch(userActions.userLogin({...userloginData,password:e.target.value}))}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
+
             placeholder="Enter your password"
             required
           />
-          <br />
+          <br/>
           <br />
           <input type="submit" className="btn-style" value="Submit" />
         </form>
