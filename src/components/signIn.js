@@ -30,7 +30,7 @@ export const SignInPage = () => {
         localStorage.setItem('refreshToken', refreshToken);
         navigate('/');
       }else{
-        setUser({});
+        if(error) setUser({});
 
       }
     } catch (error) {
