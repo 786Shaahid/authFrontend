@@ -6,15 +6,18 @@ import { useEffect, useState ,useMemo} from "react";
 import {io} from "socket.io-client"
 import { useRef } from "react";
 
-export const Chat = ({ friendId }) => {
+export const Chat = ({ friendData }) => {
+  // console.log(friendData);
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend);
-  const userData = useSelector(state => state.authReducer.userData);
+  const userData= JSON.parse(localStorage.getItem('userData'))
+  // console.log(userData,friendData);
+  // const userData = useSelector(state => state.authReducer.userData);
   const dispatch = useDispatch();
   const messageScroll=useRef(null);
   /** Create Room Id */
-  const roomId = [friendId, userData._id].sort().toString().substring(17, 30);
+  const roomId = [friendData.id, userData._id].sort().toString().substring(17, 30);
   // console.log("roomId",roomId);
   const socket = useMemo(() => io('http://localhost:4000', { transports: ['websocket', 'polling'] }), []);
 
@@ -55,7 +58,7 @@ export const Chat = ({ friendId }) => {
     <>
       <div className="chatBox">
         <div className="friendProfile">
-          <div className="">{userData.name}</div>
+          <div className="">{friendData.friendName}</div>
           <button className="cut_btn" onClick={() => {
             dispatch(chatActions.chatBox(isChatToFriend));
           }}><CiSquareRemove fontSize={40} fontWeight={900} />

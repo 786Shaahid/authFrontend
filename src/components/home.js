@@ -7,9 +7,11 @@ import { chatActions } from "../redux/reducers/chatReducer";
 export const Home = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.authReducer.users);
-  const userData = useSelector((state) => state.authReducer.userData);
-  const accessToken = useSelector((state) => state.authReducer.accessToken);
+  const userData= JSON.parse(localStorage.getItem('userData'))
+  const accessToken=localStorage.getItem('accessToken')
+ 
   const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend)
+
 
   //    Get all user list
   useEffect(() => {

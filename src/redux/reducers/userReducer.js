@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-// import { BASE_URL } from "../../utility/connection";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL === 'https://authbackend-74z0.onrender.com' ? process.env.REACT_APP_BASE_URL:process.env.REACT_APP_LOCAL_URL 
 /**1. initialize user*/
@@ -195,11 +194,13 @@ export const authSlice = createSlice({
       state.error='';
     },
     [signinUser.fulfilled]: (state, action) => {
-      // console.log('singin fullfilled',action.payload.message);
+      // console.log('singin fullfilled',action.payload.data);
       state.loading = false;
       state.accessToken = action.payload.data.accessToken;
       state.refreshToken=action.payload.data.refreshToken;
       state.userData=action.payload.data.userData;
+      localStorage.setItem('accessToken',action.payload.data.accessToken);
+      localStorage.setItem('userData',JSON.stringify(action.payload.data.userData));
       state.message="Login Successfully !";
       state.error=''
     },
@@ -242,6 +243,8 @@ export const authSlice = createSlice({
       state.accessToken = action.payload.data.accessToken;
       state.refreshToken=action.payload.data.refreshToken;
       state.userData=action.payload.data.userData;
+      localStorage.setItem('accessToken',action.payload.data.accessToken);
+      localStorage.setItem('userData',JSON.stringify(action.payload.data.userData));
       state.message="Login Successfully !";
       state.error=''
     },
@@ -277,6 +280,8 @@ export const authSlice = createSlice({
     },
     [logoutUser.fulfilled]:(state,action)=>{
       //  console.log(action);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('userData');
        state.userData="";
        state.message="Logout Successfully !";
        state.error='';

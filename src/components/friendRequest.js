@@ -4,7 +4,8 @@ import { useEffect } from "react";
 
 export const FriendRequest = () => {
     const dispatch = useDispatch();
-    const accessToken = useSelector(state => state.authReducer.accessToken);
+    const accessToken=localStorage.getItem('accessToken')
+    // const accessToken = useSelector(state => state.authReducer.accessToken);
     const friendRequestList = useSelector(state => state.friendReducer.friendRequestList);
     useEffect(() => {
         dispatch(getAllFriendRequest(accessToken))

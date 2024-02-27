@@ -6,16 +6,12 @@ import { navStyle } from "./navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { facebookAuth, googleAuth, signinUser } from "../redux/reducers/userReducer";
 import { useState } from "react";
-// import { ErrorMessageShow } from "../utility/messages/errorMessage";
-// import { userActions } from "../redux/reducers/userReducer";
+
 export const SignInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const accessToken = useSelector(state => state.authReducer.accessToken);
-  const refreshToken = useSelector(state => state.authReducer.refreshToken);
   const error = useSelector(state => state.authReducer.error);
-  // const userloginData=useSelector(state=>state.authReducer.userloginData);
-  //  console.log(userloginData);
+ 
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -25,13 +21,11 @@ export const SignInPage = () => {
     try {
       e.preventDefault();
       const result = await dispatch(signinUser(user));
+      console.log(result.payload);
       if (result.payload?.success) {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        console.log(result);
         navigate('/');
-      }else{
-        if(error) setUser({});
-
+        setUser({});
       }
     } catch (error) {
       console.log(error);

@@ -5,14 +5,14 @@ import { chatActions } from "../redux/reducers/chatReducer";
 import { Chat } from "./chat";
 
 export const FriendList = () => {
-   const [friendId,setFriendId]=useState('');
+   const [friendData,setFriendData]=useState({});
    const myFriends = useSelector(state => state.friendReducer.myFriends);
-   const accessToken = useSelector(state => state.authReducer.accessToken);
-   const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend)
+   const accessToken=localStorage.getItem('accessToken');
+   const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend);
    const dispatch = useDispatch();
-
+  
    useEffect(() => {
-      dispatch(friendList({ token: accessToken }))
+      dispatch(friendList({ token: accessToken }));
    }, [dispatch, accessToken])
 
    return (
@@ -33,7 +33,7 @@ export const FriendList = () => {
                         className="friBtn">Remove</button>
                         <button onClick={(e) => {
                            e.preventDefault();
-                           setFriendId(friend.acceptedFriendList._id) 
+                           setFriendData({id:friend.acceptedFriendList._id,friendName:friend.acceptedFriendList.name}) 
                            dispatch(chatActions.chatBox(isChatToFriend));
                         }}
                            className="friBtn"
@@ -45,7 +45,7 @@ export const FriendList = () => {
             }
          
          {  isChatToFriend &&   ( <div className="chat">
-        <Chat friendId={friendId}/>
+        <Chat friendData={friendData}/>
       </div>)}
 
       </>

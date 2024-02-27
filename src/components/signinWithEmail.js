@@ -10,8 +10,8 @@ export const SignInWithEmail = () => {
   const navigate=useNavigate();
   let isMailSend = useSelector((state) => state.authReducer.isMailSend);
   const error = useSelector(state => state.authReducer.error);
-  const accessToken = useSelector(state => state.authReducer.accessToken);
-  const refreshToken = useSelector(state => state.authReducer.refreshToken);
+  // const accessToken = useSelector(state => state.authReducer.accessToken);
+  // const refreshToken = useSelector(state => state.authReducer.refreshToken);
 
   // handle submit send email
   const handleEmailMessage = (e) => {
@@ -25,9 +25,7 @@ export const SignInWithEmail = () => {
       e.preventDefault();
       const result = await dispatch(sendOtpEmail({otp:otp}));
       if (result.payload.success) {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        setOtp("");
+       setOtp("");
         navigate('/');
       }
     } catch (error) {

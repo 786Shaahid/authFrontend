@@ -16,11 +16,11 @@ import { ErrorMessageShow } from "./utility/messages/errorMessage.js";
 
 function App() {
   const userData = useSelector((state) => state.authReducer.userData);
-  // console.log(userData);
   const loadingUser=useSelector(state=>state.authReducer.loading);
   const error = useSelector(state => state.authReducer.error);
+  const pending=useSelector(state=>state.friendReducer.pending);
 
-  const pending=useSelector(state=>state.friendReducer.pending)
+
   return (
     <>
        {
