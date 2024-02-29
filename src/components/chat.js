@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'development') {
   socketUrl = 'http://localhost:4000';
 } else {
   // Use Render hosted URL
-  socketUrl = 'https://authbackend-74z0.onrender.com';
+  socketUrl = 'wss://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket';
 }
   
   
