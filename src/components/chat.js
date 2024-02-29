@@ -28,8 +28,9 @@ export const Chat = ({ friendData }) => {
   const socket = useMemo(
     () =>
       io(
-        `wss://https://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket`,
-        { transports: ["websocket", "polling"] }
+        "wss://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket"
+        // `wss://https://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket`,
+        // { transports: ["websocket", "polling"] }
       ),
     []
   );
