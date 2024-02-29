@@ -3,15 +3,16 @@ import { getAll, userActions } from "../redux/reducers/userReducer";
 import { addFriend, removeFriend } from "../redux/reducers/userFriend";
 import { useEffect } from "react";
 import { chatActions } from "../redux/reducers/chatReducer";
+// import { FiLoader } from "react-icons/fi";
 
 export const Home = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.authReducer.users);
   const userData= JSON.parse(localStorage.getItem('userData'))
   const accessToken=localStorage.getItem('accessToken')
- 
+  // const loading=useSelector(state=>state.authReducer.loading)
   const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend)
-
+// console.log(users);
 
   //    Get all user list
   useEffect(() => {
@@ -33,7 +34,29 @@ export const Home = () => {
               />
               <h3>{user.name}</h3>
             </div>
-            <div className="suggestion">
+            {/* <div className="suggestion">
+              {
+               user.friendship?.status==='pending' ? (<button
+                onClick={(e) => {
+                  e.preventDefault()
+                }} 
+                className="friBtn"
+              >
+                { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" }
+                
+              </button>): user.friendship?.status==='accept' ? (<button
+                  onClick={(e) => {
+                    e.preventDefault();
+                     
+                  }}
+                  className="friBtn"
+                >
+                  { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" }
+                  
+                </button>): "Add Friend"    
+              }
+            </div> */}
+             <div className="suggestion">
               {user.friendship?._id ? (
                 <button
                   onClick={(e) => {
@@ -55,7 +78,8 @@ export const Home = () => {
                   }}
                   className="friBtn"
                 >
-                  Cancel
+                { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" }
+
                 </button>
               ) : (
                 <button
@@ -78,10 +102,12 @@ export const Home = () => {
                   }}
                   className="friBtn"
                 >
-                  Send 
+                  { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" }
+                  
                 </button>
               )}
-            </div>
+            </div> 
+            
           </div>
         ))}
       </div>

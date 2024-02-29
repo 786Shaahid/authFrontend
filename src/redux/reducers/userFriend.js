@@ -3,8 +3,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 // import { BASE_URL } from "../../utility/connection";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL === 'https://authbackend-74z0.onrender.com' ? process.env.REACT_APP_BASE_URL:process.env.REACT_APP_LOCAL_URL 
-// console.log(BASE_URL);
+const BASE_URL = process.env.REACT_APP_BASE_URL; 
+// const BASE_URL=process.env.REACT_APP_LOCAL_URL
+
+console.log(BASE_URL);
 const initialState = {
   friendRequestList: [],
   myFriends: [],
@@ -26,7 +28,7 @@ export const addFriend = createAsyncThunk('friend/addFriend', async (data, { ful
         Authorization: `Bearer ${data.token}`
       }
     });
-    console.log(friendAdded);
+    // console.log(friendAdded);
     return fulfillWithValue(friendAdded);
   } catch (err) {
     console.log(err);
@@ -39,7 +41,6 @@ export const getAllFriendRequest = createAsyncThunk('friend/getAllFriendRequest'
   // console.log(data);
   try {
     const friendRequest = await axios.get(`${BASE_URL}/api/friends/getAllFriendRequest`, {
-      //  const friendRequest= await axios.get(`/api/friends/getAllFriendRequest`,{
       headers: {
         Authorization: `Bearer ${data}`
       }
@@ -87,20 +88,20 @@ export const removeFriend = createAsyncThunk('friend/removeFriend', async (data,
 
 /** 5. list of freinds*/
 export const friendList = createAsyncThunk('friend/friendList', async (data, { fulfillWithValue, rejectWithValue }) => {
-  // console.log(data);
+  console.log(data);
   try {
     const response = await axios.post(`${BASE_URL}/api/friends/friendlist`, { id: data.id }, {
-      //  const response= await axios.post(`/api/friends/friendlist`,{id:data.id},{
       headers: {
+        // "Content-Type":"application/json",
         Authorization: `Bearer ${data.token}`
       }
     });
-    //  console.log(response.data);
+     console.log(response.data);
     return fulfillWithValue(response.data);
   } catch (error) {
     console.log(error);
     rejectWithValue(error)
-  }
+  }   
 
 });
 

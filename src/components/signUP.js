@@ -22,7 +22,7 @@ export const SingUpPage = () => {
   const handleFormData = async (e) => {
     e.preventDefault();
     const result = await dispatch(signupUser(userData));
-    if (result.payload.success) {
+    if (result.payload?.success) {
       navigate("/signin");
     }
     setUserData({});

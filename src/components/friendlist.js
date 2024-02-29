@@ -10,7 +10,7 @@ export const FriendList = () => {
    const accessToken=localStorage.getItem('accessToken');
    const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend);
    const dispatch = useDispatch();
-  
+   console.log("hii bahya",myFriends);
    useEffect(() => {
       dispatch(friendList({ token: accessToken }));
    }, [dispatch, accessToken])
@@ -18,7 +18,7 @@ export const FriendList = () => {
    return (
       <>
             {
-              myFriends.length?   ( <div className="suggestion_box" >
+              myFriends?.length ?  ( <div className="suggestion_box" >
                  {myFriends.map((friend,index) => (
                <div className={`suggestion_friend_box ${isChatToFriend ? 'disabled' : ''}`} key={index}>
                   <div className="suggestion">

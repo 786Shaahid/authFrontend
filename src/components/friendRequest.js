@@ -4,9 +4,11 @@ import { useEffect } from "react";
 
 export const FriendRequest = () => {
     const dispatch = useDispatch();
-    const accessToken=localStorage.getItem('accessToken')
+    const accessToken=localStorage.getItem('accessToken');
+    // console.log(accessToken);
     // const accessToken = useSelector(state => state.authReducer.accessToken);
     const friendRequestList = useSelector(state => state.friendReducer.friendRequestList);
+    // console.log(friendRequestList);
     useEffect(() => {
         dispatch(getAllFriendRequest(accessToken))
     }, [dispatch, accessToken])
@@ -19,7 +21,7 @@ export const FriendRequest = () => {
 
                          friendRequestList.map((friend) =>
                         (
-                            <div className="suggestion_friend_box" >
+                            <div className="suggestion_friend_box" key={friend._id} >
                                 <div className="suggestion">
                                     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="pic" className="suggestion_pic" />
                                     <h3>{friend.friendDetails.name}</h3>

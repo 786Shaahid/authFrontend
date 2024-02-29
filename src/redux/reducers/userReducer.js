@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL === 'https://authbackend-74z0.onrender.com' ? process.env.REACT_APP_BASE_URL:process.env.REACT_APP_LOCAL_URL 
-/**1. initialize user*/
+const BASE_URL = process.env.REACT_APP_BASE_URL ;
+// const BASE_URL=process.env.REACT_APP_LOCAL_URL;
 const initialState = {
   isMailSend: false,
   emailToken: {},
@@ -189,12 +189,13 @@ export const authSlice = createSlice({
     },
     // 2. signin
     [signinUser.pending]: (state) => {
+      console.log("loading");
       state.loading = true;
       state.message='';
       state.error='';
     },
     [signinUser.fulfilled]: (state, action) => {
-      // console.log('singin fullfilled',action.payload.data);
+      console.log('singin fullfilled',action.payload);
       state.loading = false;
       state.accessToken = action.payload.data.accessToken;
       state.refreshToken=action.payload.data.refreshToken;
@@ -205,7 +206,7 @@ export const authSlice = createSlice({
       state.error=''
     },
     [signinUser.rejected]: (state, action) => {
-      // console.log('signin-reject',action.payload);
+      console.log('signin-reject',action);
       state.loading=false
       state.message='';
       state.error=  action.payload?.status===400? action.payload?.data.message : action.payload?.statusText

@@ -19,7 +19,8 @@ export const Chat = ({ friendData }) => {
   /** Create Room Id */
   const roomId = [friendData.id, userData._id].sort().toString().substring(17, 30);
   // console.log("roomId",roomId);
-  const socket = useMemo(() => io('http://localhost:4000', { transports: ['websocket', 'polling'] }), []);
+  // const socket = useMemo(() => io('localhost:4000'  , { transports: ['websocket', 'polling'] }), []);
+  const socket = useMemo(() => io(`${process.env.REACT_APP_BASE_URL}`  , { transports: ['websocket', 'polling'] }), []);
 
   useEffect(()=>{
     if (messageScroll.current) {
@@ -69,7 +70,7 @@ export const Chat = ({ friendData }) => {
           {messages.map((msg, index) => (
             <div key={index} className={`messageContainer ${msg.userId === userData._id ? 'chatRight' : 'chatLeft'}`}>
               {msg.message}
-            </div>
+            </div>                                                                                                                                                                                                                                                                                                                                                        
           ))}
         </div>
         <div className="messageBox">
