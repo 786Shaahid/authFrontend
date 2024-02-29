@@ -24,15 +24,22 @@ export const Chat = ({ friendData }) => {
     .toString()
     .substring(17, 30);
   // console.log("roomId",roomId);
+  let socketUrl;
+
+if (process.env.NODE_ENV === 'development') {
+  // Use local development URL
+  socketUrl = 'http://localhost:4000';
+} else {
+  // Use Render hosted URL
+  socketUrl = 'https://authbackend-74z0.onrender.com';
+}
+  
+  
   // const socket = useMemo(() => io('localhost:4000'  , { transports: ['websocket', 'polling'] }), []);
   const socket = useMemo(
     () =>
-      io(
-        "wss://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket",
-        // `wss://https://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket`,
-        { transports: ["websocket", "polling"] }
-      ),
-    []
+      io( socketUrl,{ transports: ["websocket", "polling"] }),
+    [socketUrl]
   );
 
   useEffect(() => {

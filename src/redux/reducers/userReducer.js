@@ -1,8 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL ;
+// const BASE_URL = process.env.REACT_APP_BASE_URL ;
 // const BASE_URL=process.env.REACT_APP_LOCAL_URL;
+let BASE_URL;
+
+if (process.env.NODE_ENV === 'development') {
+  // Use local development URL
+  BASE_URL =  process.env.REACT_APP_LOCAL_URL;
+} else {
+  // Use Render hosted URL
+  BASE_URL = process.env.REACT_APP_BASE_URL;
+}
+
 const initialState = {
   isMailSend: false,
   emailToken: {},
@@ -209,7 +219,7 @@ export const authSlice = createSlice({
       console.log('signin-reject',action);
       state.loading=false
       state.message='';
-      state.error=  action.payload?.status===400? action.payload?.data.message : action.payload?.statusText
+      state.error= ( action.payload?.status===400? action.payload?.data.message : action.payload?.statusText)|| "Server Doesn't Responding !"
     },
 
     // 3. sending mail
@@ -228,7 +238,8 @@ export const authSlice = createSlice({
     },
     [sendMail.rejected]: (state, action) => {
       // console.log("mail send pending", action.payload);
-      state.error = action.payload?.response?.data?.error;
+      state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
+
       state.message='';
       state.loading=false;
     },
@@ -251,7 +262,8 @@ export const authSlice = createSlice({
     },
     [sendOtpEmail.rejected]: (state, action) => {
       // console.log('send otp-reject',action.payload);
-      state.error = action.payload?.response?.data?.error;
+      // state.error = action.payload?.response?.data?.error;
+      state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
       state.loading=false;
       state.message=''
     },
@@ -268,7 +280,7 @@ export const authSlice = createSlice({
     },
     [getAll.rejected]: (state, action) => {
       // console.log(action.payload);
-      state.error = "Something Went Wrong !";
+      state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
       state.loading=false;
       state.message='';
     },
@@ -290,7 +302,7 @@ export const authSlice = createSlice({
     },
     [logoutUser.rejected]:(state,action)=>{
       // console.log(action.payload);
-      state.error="Something Went Wrong !";
+      state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
       state.message='';
       state.loading=false;
     },
@@ -312,7 +324,7 @@ export const authSlice = createSlice({
       // console.log("google-reject",action.payload);
       state.loading=false;
       state.message='';
-      state.error="Something Went Wrong";
+      state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
    },
     // FACEBOOK AUTHENTICATION
    [facebookAuth.pending]:(state)=>{
@@ -331,7 +343,7 @@ export const authSlice = createSlice({
       // console.log("facebook-reject",action.payload);
       state.loading=false;
       state.message='';
-      state.error=action.payload?.error;
+      state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
    }
 
 

@@ -3,9 +3,17 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 // import { BASE_URL } from "../../utility/connection";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL; 
+// const BASE_URL = process.env.REACT_APP_BASE_URL; 
 // const BASE_URL=process.env.REACT_APP_LOCAL_URL
+let BASE_URL;
 
+if (process.env.NODE_ENV === 'development') {
+  // Use local development URL
+  BASE_URL =  process.env.REACT_APP_LOCAL_URL;
+} else {
+  // Use Render hosted URL
+  BASE_URL = process.env.REACT_APP_BASE_URL;
+}
 console.log(BASE_URL);
 const initialState = {
   friendRequestList: [],
@@ -132,7 +140,7 @@ const friendSlice = createSlice({
     },
     [addFriend.rejected]: (state, action) => {
       console.log('addfriend reject', action.paylaod);
-      state.error = action.paylaod?.data;
+      state.error = (action.paylaod?.data) || "Server Doesn't Responding !";
       state.pending = false;
       state.message = '';
     },
@@ -152,7 +160,7 @@ const friendSlice = createSlice({
     },
     [getAllFriendRequest.rejected]: (state, action) => {
       // console.log('getallfriendrequest-reject',action.paylaod);
-      state.error = action.paylaod?.data?.error;
+      state.error = (action.paylaod?.data?.error)|| "Server Doesn't Responding !";
       state.message = '';
       state.pending = '';
     },
@@ -172,7 +180,7 @@ const friendSlice = createSlice({
     },
     [acceptFriend.rejected]: (state, action) => {
       // console.log('acceptfriend-rejected',action.paylaod);
-      state.error = "Something Went Wrong";
+      state.error = (action.paylaod?.data?.error)|| "Server Doesn't Responding !";
       state.pending = false;
       state.message = '';
     },
@@ -212,7 +220,7 @@ const friendSlice = createSlice({
     },
     [friendList.rejected]: (state, action) => {
       // console.log('friendList-reject ',action.paylaod);
-      state.error = action.paylaod?.data.error
+      state.error = (action.paylaod?.data?.error)|| "Server Doesn't Responding !";
       state.pending = false;
       state.message = '';
     }

@@ -10,11 +10,8 @@ export const ErrorMessageShow=()=>{
     const handleClick=()=>{
         dispatch(userActions.toggleError());
     }
-
-
     return(
         <>
-
     {
       error && (<div className="notification_box">
      <span>{error ? error :"Something went wrong !"}</span>
