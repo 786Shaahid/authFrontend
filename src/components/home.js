@@ -78,8 +78,8 @@ export const Home = () => {
                   }}
                   className="friBtn"
                 >
-                { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" }
-
+                {/* { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" } */}
+                Remove Friend
                 </button>
               ) : (
                 <button
@@ -102,8 +102,8 @@ export const Home = () => {
                   }}
                   className="friBtn"
                 >
-                  { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" }
-                  
+                  {/* { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" } */}
+                  Add Friend
                 </button>
               )}
             </div> 
