@@ -8,10 +8,11 @@ import { useRef } from "react";
 
 export const Chat = ({ friendData }) => {
   // console.log(friendData);
+  
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const isChatToFriend = useSelector(
-    (state) => state.chatReducer.isChatToFriend
+(state) => state.chatReducer.isChatToFriend
   );
   const userData = JSON.parse(localStorage.getItem("userData"));
   // console.log(userData,friendData);
@@ -27,10 +28,8 @@ export const Chat = ({ friendData }) => {
   let socketUrl;
 
 if (process.env.NODE_ENV === 'development') {
-  // Use local development URL
   socketUrl = 'http://localhost:4000';
 } else {
-  // Use Render hosted URL
   socketUrl = 'wss://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket';
 }
   
@@ -38,7 +37,7 @@ if (process.env.NODE_ENV === 'development') {
   // const socket = useMemo(() => io('localhost:4000'  , { transports: ['websocket', 'polling'] }), []);
   const socket = useMemo(
     () =>
-      io( socketUrl,{ transports: ["websocket", "polling"] }),
+      io( socketUrl,{ transports: ["websocket"] }),
     [socketUrl]
   );
 
@@ -54,7 +53,7 @@ if (process.env.NODE_ENV === 'development') {
     socket.on("connect", () => {
       console.log("userId connected!");
     });
-    socket.emit("joinRoom", roomId);
+    socket.emit("joinRoom", roomId);  
     socket.on("chat", (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
       // console.log("data from server",data);
