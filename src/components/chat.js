@@ -30,7 +30,8 @@ export const Chat = ({ friendData }) => {
 if (process.env.NODE_ENV === 'development') {
   socketUrl = 'http://localhost:4000';
 } else {
-  socketUrl = 'wss://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket';
+  // socketUrl = 'wss://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket';
+  socketUrl = process.env.REACT_APP_BASE_URL;
 }
   
   
