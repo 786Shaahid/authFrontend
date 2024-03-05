@@ -28,7 +28,7 @@ export const Chat = ({ friendData }) => {
   let socketUrl;
 
 if (process.env.NODE_ENV === 'development') {
-  socketUrl = 'http://localhost:4000';
+  socketUrl = 'http://localhost:8080';
 } else {
   // socketUrl = 'wss://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket';
   socketUrl = process.env.REACT_APP_BASE_URL;
@@ -38,12 +38,13 @@ if (process.env.NODE_ENV === 'development') {
   // const socket = useMemo(() => io('localhost:4000'  , { transports: ['websocket', 'polling'] }), []);
   const socket = useMemo(
     () =>
-      io( socketUrl,{ transports: ["websocket"] }),
+      io( socketUrl,{ transports: ["websocket",'polling'] }),
     [socketUrl]
   );
 
   useEffect(() => {
     if (messageScroll.current) {
+      // console.log(messageScroll.current);
       messageScroll.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
@@ -91,13 +92,14 @@ if (process.env.NODE_ENV === 'development') {
             <CiSquareRemove fontSize={40} fontWeight={900} />
           </button>
         </div>
-        <div className="chatContainer" ref={messageScroll}>
+        <div className="chatContainer" >
           {messages.map((msg, index) => (
             <div
               key={index}
               className={`messageContainer ${
                 msg.userId === userData._id ? "chatRight" : "chatLeft"
               }`}
+              ref={messageScroll}
             >
               {msg.message}
             </div>
