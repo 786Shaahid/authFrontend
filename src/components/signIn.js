@@ -4,7 +4,7 @@ import { TfiEmail } from "react-icons/tfi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
 import { useDispatch, useSelector } from "react-redux";
-import {  signinUser,} from "../redux/reducers/userReducer";
+import {  signinUser} from "../redux/reducers/userReducer";
 import {  useState } from "react";
 import BASE_URL from "../utility/environment";
 
@@ -54,7 +54,6 @@ export const SignInPage = () => {
           <input
             type="text"
             value={user.email || ""}
-            // onChange={(e) => dispatch(userActions.userLogin({...userloginData,email:e.target.value}))}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             name="email"
             placeholder="Enter your email"
@@ -68,9 +67,7 @@ export const SignInPage = () => {
             type="text"
             name="passport"
             value={user.password || ""}
-            // onChange={(e) => dispatch(userActions.userLogin({...userloginData,password:e.target.value}))}
             onChange={(e) => setUser({ ...user, password: e.target.value })}
-
             placeholder="Enter your password"
             required
           />

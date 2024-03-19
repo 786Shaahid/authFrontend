@@ -3,8 +3,9 @@ import { FaFacebook } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
 import { useState } from "react";
-import { facebookAuth, googleAuth, signupUser } from "../redux/reducers/userReducer";
+import {  signupUser } from "../redux/reducers/userReducer";
 import { useDispatch ,useSelector} from "react-redux";
+import BASE_URL from "../utility/environment";
 // import { ErrorMessageShow } from "../utility/messages/errorMessage";
 
 export const SingUpPage = () => {
@@ -17,7 +18,13 @@ export const SingUpPage = () => {
     email: "",
     password: "",
   });
-
+  const loginWithGoogle= ()=>{
+    window.open(`${BASE_URL}/api/users/auth/google/callback`,'_self');
+ }
+ 
+ const loginWithFacebook=()=>{
+    window.open(`${BASE_URL}/api/users/auth/facebook/callback`,'_self')
+ }
 
   const handleFormData = async (e) => {
     e.preventDefault();
@@ -66,16 +73,16 @@ export const SingUpPage = () => {
           <span className="margin_right">
             <FcGoogle />
           </span>
-          <span className="social_auth" onClick={() => dispatch(googleAuth())}>
-            Sign in with google
+          <span className="social_auth" onClick={loginWithGoogle}>
+              Sign in with google
           </span>
         </div>
         <div className="logBtn">
           <span className="margin_right">
             <FaFacebook />
           </span>
-          <span className="social_auth" onClick={() =>  dispatch(facebookAuth())}>
-            Sign in with Facebook
+          <span className="social_auth" onClick={loginWithFacebook}>
+              Sign in with Facebook
           </span>
         </div>
         <div className="seperator_line">
