@@ -2,17 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import BASE_URL from "../../utility/environment";
 
-// const BASE_URL = process.env.REACT_APP_BASE_URL ;
-// const BASE_URL=process.env.REACT_APP_LOCAL_URL;
-// let BASE_URL;
-
-// if (process.env.NODE_ENV === 'development') {
-//   // Use local development URL
-//   BASE_URL =  process.env.REACT_APP_LOCAL_URL;
-// } else {
-//   // Use Render hosted URL
-//   BASE_URL = process.env.REACT_APP_BASE_URL;
-// }
 
 const initialState = {
   isMailSend: false,
@@ -37,7 +26,7 @@ export const signupUser = createAsyncThunk(
       // console.log("response",response.data);
       return fulfillWithValue(response.data); 
     } catch (err) {
-      console.log(err.response);
+      // console.log(err.response);
       return rejectWithValue(err.response);
     }
   }
@@ -52,7 +41,7 @@ export const signinUser = createAsyncThunk(
       const response = await axios.post(`${BASE_URL}/api/users/signin`, user);
       return fulfillWithValue(response.data);
     } catch (err) {
-      console.log(err.response);
+      // console.log(err.response);
       return rejectWithValue(err.response);
     }
   }
@@ -68,7 +57,7 @@ export const sendMail = createAsyncThunk(
       // console.log(response.data);
       return fulfillWithValue(response.data);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
      return rejectWithValue(err);
     }
   }
@@ -116,40 +105,40 @@ export const getAll = createAsyncThunk("auth/getAll", async (data,{fulfillWithVa
  }
   })
 
-  /** 6.  GOOOGEL AUTHENTICATION */
-export const googleAuth=createAsyncThunk('/auth/googleAuth',async({rejectWithValue,fulfillWithValue})=>{
-      try {
-            //  const response= await axios.get(`/api/users/auth/google`);
-             const response= await axios.get(`${BASE_URL}/api/users/auth/google`);
-             console.log(response);
-             return fulfillWithValue(response.data);
-      } catch (error) {
-          console.log(error);
-        return rejectWithValue(error.data);        
-      }
+//   /** 6.  GOOOGEL AUTHENTICATION */
+// export const googleAuth=createAsyncThunk('/auth/googleAuth',async({rejectWithValue,fulfillWithValue})=>{
+//       try {
+//             //  const response= await axios.get(`/api/users/auth/google`);
+//              const response= await axios.get(`${BASE_URL}/api/users/auth/google`);
+//             //  console.log(response);
+//              return fulfillWithValue(response.data);
+//       } catch (error) {
+//           console.log(error);
+//         return rejectWithValue(error.data);        
+//       }
 
-})
-  /** 7.  GOOOGEL AUTHENTICATION */
-export const facebookAuth=createAsyncThunk('auth/facebookAuth',async(data,{rejectWithValue,fulfillWithValue})=>{
-      try {
-            //  const response= await axios.get(`/api/users/auth/facebook`);
-             const response= await axios.get(`${BASE_URL}/api/users/auth/facebook`);
-             return fulfillWithValue(response.data);
-      } catch (error) {
-        console.log(error);
-        return rejectWithValue(error);        
-      }
+// })
+//   /** 7.  GOOOGEL AUTHENTICATION */
+// export const facebookAuth=createAsyncThunk('auth/facebookAuth',async(data,{rejectWithValue,fulfillWithValue})=>{
+//       try {
+//             //  const response= await axios.get(`/api/users/auth/facebook`);
+//              const response= await axios.get(`${BASE_URL}/api/users/auth/facebook`);
+//              return fulfillWithValue(response.data);
+//       } catch (error) {
+//         console.log(error);
+//         return rejectWithValue(error);        
+//       }
 
-})
+// })
 /**  DEFINE SOCIAL AUTHENTICATION */
 export const socialAuth=createAsyncThunk('auth/socialAuth',async(data,{rejectWithValue,fulfillWithValue} )=>{
                     try {
                       console.log(BASE_URL);
                        const response= await axios.get(`${BASE_URL}/api/users/login/success`,{withCredentials:true});
-                       console.log("social auth",response);
+                      //  console.log("social auth",response);
                        return fulfillWithValue(response.data)
                     } catch (error) {
-                       console.log('error in social auth',error);
+                      //  console.log('error in social auth',error);
                        return rejectWithValue(error.response)
                     }         
 
@@ -325,7 +314,7 @@ export const authSlice = createSlice({
 
     },
     [socialAuth.fulfilled]:(state,action)=>{
-        console.log('socialauth-fulfilled',action.payload);
+        // console.log('socialauth-fulfilled',action.payload);
         state.loading = false;
         state.userData=action.payload.data.userData;
         localStorage.setItem('accessToken',action.payload.data.accessToken);
@@ -334,7 +323,7 @@ export const authSlice = createSlice({
         state.error=''
     },
     [socialAuth.rejected]:(state,action)=>{
-      console.log('socialauth-reject',action.payload);
+      // console.log('socialauth-reject',action.payload);
       state.loading=false
       state.message='';
       state.error= ''

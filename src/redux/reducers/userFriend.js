@@ -17,7 +17,6 @@ export const addFriend = createAsyncThunk('friend/addFriend', async (data, { ful
   // console.log(data);
   try {
     const friendAdded = await axios.post(`${BASE_URL}/api/friends/addfriend`, {
-      //  const friendAdded= await axios.post(`/api/friends/addfriend`,{
       userId: data.userId,
       friendId: data.friendId
     }, {
@@ -93,10 +92,10 @@ export const friendList = createAsyncThunk('friend/friendList', async (data, { f
         Authorization: `Bearer ${data.token}`
       }
     });
-     console.log(response.data);
+    //  console.log(response.data);
     return fulfillWithValue(response.data);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     rejectWithValue(error)
   }   
 
