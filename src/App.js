@@ -8,21 +8,33 @@ import { Navbar } from "./components/navbar";
 import { FriendRequest } from "./components/friendRequest.js";
 import { FriendList } from "./components/friendlist.js";
 import { ProtectedRoute } from "./components/ProtectedRoute.js";
-import { useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { Loader } from "./utility/Loder/loader.js";
 import { ShowResponse } from "./utility/messages/responseMessage.js";
 import { ErrorMessageShow } from "./utility/messages/errorMessage.js";
+// import { useEffect } from "react";
+// import { socialAuth } from "./redux/reducers/userReducer.js";
 // import { logoutUser } from "./redux/reducers/userReducer.js";
-
+import DeviceTypeChecker from './components/deviceTypeChecker.js'
 function App() {
   const userData = useSelector((state) => state.authReducer.userData);
   const loadingUser=useSelector(state=>state.authReducer.loading);
   const error = useSelector(state => state.authReducer.error);
   const pending=useSelector(state=>state.friendReducer.pending);
+//   const dispatch=useDispatch();
+// useEffect(()=>{
+//   dispatch(socialAuth())
+// },[])
 
-
+  // useEffect(()=>{
+  //   dispatch(socialAuth());
+  //       }
+  //     ,[])
   return (
     <>
+    {
+      <DeviceTypeChecker/>
+    }
        {
          (loadingUser || pending )&&( <Loader/>)
       }

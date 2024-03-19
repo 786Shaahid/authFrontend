@@ -7,11 +7,10 @@ import { logoutUser } from "../redux/reducers/userReducer";
 export const Navbar = () => {
   const dispatch=useDispatch();
   const user= JSON.parse(localStorage.getItem('userData'))
-  const accessToken=localStorage.getItem('accessToken')
+  const accessToken=localStorage.getItem('accessToken');
 
 const handleLogout= ()=>{
    dispatch(logoutUser(accessToken));
-
   }
 
   return (

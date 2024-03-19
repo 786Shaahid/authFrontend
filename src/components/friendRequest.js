@@ -1,14 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { acceptFriend, getAllFriendRequest, removeFriend } from "../redux/reducers/userFriend";
 import { useEffect } from "react";
+import { Skeleton } from "./skeleton";
 
 export const FriendRequest = () => {
     const dispatch = useDispatch();
     const accessToken=localStorage.getItem('accessToken');
-    // console.log(accessToken);
-    // const accessToken = useSelector(state => state.authReducer.accessToken);
     const friendRequestList = useSelector(state => state.friendReducer.friendRequestList);
-    // console.log(friendRequestList);
     useEffect(() => {
         dispatch(getAllFriendRequest(accessToken))
     }, [dispatch, accessToken])
@@ -44,7 +42,7 @@ export const FriendRequest = () => {
                         )
                         )
                 }
-            </div>): (<h2 style={{  color: "white" }} >There Have No Request Recieved Yet</h2>)
+            </div>): (<Skeleton message={friendRequestList.length ? "":"You haven't got any friend request"} />)
 }
         </>
     )

@@ -1,29 +1,38 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getAll, userActions } from "../redux/reducers/userReducer";
+import { getAll } from "../redux/reducers/userReducer";
 import { addFriend, removeFriend } from "../redux/reducers/userFriend";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { chatActions } from "../redux/reducers/chatReducer";
-// import { FiLoader } from "react-icons/fi";
+import { FiLoader } from "react-icons/fi";
+import { Skeleton } from "./skeleton";
 
 export const Home = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.authReducer.users);
-  const userData= JSON.parse(localStorage.getItem('userData'))
-  const accessToken=localStorage.getItem('accessToken')
-  // const loading=useSelector(state=>state.authReducer.loading)
-  const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend)
-// console.log(users);
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const accessToken = localStorage.getItem('accessToken');
+  const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend);
+  const loadingUser=useSelector(state=> state.authReducer.loading);
+  const loadingFri=useSelector(state=> state.friendReducer.loading);
+
+
+  const [id,setId]=useState('');
+  // console.log(id);
 
   //    Get all user list
   useEffect(() => {
-    dispatch(getAll(userData._id));
-  }, [dispatch, userData._id]);
+    getData();
+  },[]);
+
+ async function getData(){
+   await dispatch(getAll(userData._id));
+  }
 
   return (
     <>
-      
 
-      <div className="suggestion_box">
+    {
+     users?.length ? (<div className="suggestion_box">
         {users.map((user, index) => (
           <div className="suggestion_friend_box" key={index}>
             <div className="suggestion">
@@ -34,83 +43,53 @@ export const Home = () => {
               />
               <h3>{user.name}</h3>
             </div>
-            {/* <div className="suggestion">
-              {
-               user.friendship?.status==='pending' ? (<button
-                onClick={(e) => {
-                  e.preventDefault()
-                }} 
-                className="friBtn"
-              >
-                { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" }
-                
-              </button>): user.friendship?.status==='accept' ? (<button
-                  onClick={(e) => {
-                    e.preventDefault();
-                     
-                  }}
-                  className="friBtn"
-                >
-                  { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" }
-                  
-                </button>): "Add Friend"    
-              }
-            </div> */}
-             <div className="suggestion">
+            <div className="suggestion">
               {user.friendship?._id ? (
                 <button
-                  onClick={(e) => {
+                  onClick={async(e) => {
                     e.preventDefault();
-                    dispatch(
+                    setId(user._id)
+                    await dispatch(
                       removeFriend({
                         id: user.friendship?._id,
-                        token: accessToken,
+                        token: accessToken
                       })
-                    );
-                    dispatch(
-                      userActions.updateBtnInSuggestionFriend({
-                        user,
-                        friendshipID: user.friendship?._id,
-                        index,
-                      })
-                    );
-                    dispatch(chatActions.chatBox(isChatToFriend))
+                      )
+                      dispatch(chatActions.chatBox(isChatToFriend));
+                   await getData();
+
                   }}
                   className="friBtn"
                 >
-                {/* { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" } */}
-                Remove Friend
+                { ((loadingUser || loadingFri) && id===user._id )? <FiLoader/>: "Remove Friend"}
+                
                 </button>
               ) : (
                 <button
-                  onClick={(e) => {
+                  onClick={async(e) => {
                     e.preventDefault();
-                    dispatch(
+                    setId(user._id)
+                    await dispatch(
                       addFriend({
                         userId: userData._id,
                         friendId: user._id,
                         token: accessToken,
                       })
-                    );
-                    dispatch(
-                      userActions.updateBtnInSuggestionFriend({
-                        user,
-                        friendship: user.friendship?._id,
-                        index,
-                      })
-                    );
+                      );
+                      await getData();
                   }}
                   className="friBtn"
                 >
-                  {/* { user.friendship?.status==='pending' ? "Request sent" : user.friendship?.status==='accept'? "Remove Friend":"Add Friend" } */}
-                  Add Friend
+                   { ((loadingFri || loadingUser) && id===user._id )? <FiLoader/>: "Add Friend"}
+                  
                 </button>
               )}
-            </div> 
-            
+            </div>
+
           </div>
         ))}
-      </div>
+      </div>):(<Skeleton/>)
+      }
     </>
   );
 };

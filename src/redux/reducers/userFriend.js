@@ -1,20 +1,9 @@
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-// import { BASE_URL } from "../../utility/connection";
+import BASE_URL from "../../utility/environment";
 
-// const BASE_URL = process.env.REACT_APP_BASE_URL; 
-// const BASE_URL=process.env.REACT_APP_LOCAL_URL
-let BASE_URL;
-
-if (process.env.NODE_ENV === 'development') {
-  // Use local development URL
-  BASE_URL =  process.env.REACT_APP_LOCAL_URL;
-} else {
-  // Use Render hosted URL
-  BASE_URL = process.env.REACT_APP_BASE_URL;
-}
-console.log(BASE_URL);
+/** INITIALIZE THE FRIEND STATES */
 const initialState = {
   friendRequestList: [],
   myFriends: [],

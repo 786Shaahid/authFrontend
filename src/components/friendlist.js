@@ -3,6 +3,7 @@ import { friendList, removeFriend } from "../redux/reducers/userFriend";
 import { useEffect, useState } from "react";
 import { chatActions } from "../redux/reducers/chatReducer";
 import { Chat } from "./chat";
+import { Skeleton } from "./skeleton";
 
 export const FriendList = () => {
    const [friendData,setFriendData]=useState({});
@@ -10,7 +11,6 @@ export const FriendList = () => {
    const accessToken=localStorage.getItem('accessToken');
    const isChatToFriend = useSelector(state => state.chatReducer.isChatToFriend);
    const dispatch = useDispatch();
-   console.log("hii bahya",myFriends);
    useEffect(() => {
       dispatch(friendList({ token: accessToken }));
    }, [dispatch, accessToken])
@@ -41,8 +41,9 @@ export const FriendList = () => {
                     
                   </div>
                </div>))}
-         </div>):(<h2 style={{color:"white"}} >You Have No Friends </h2>)  
-            }
+         </div>):(<Skeleton message={myFriends.length ? "":"You have no friend"} />)  
+               }
+            
          
          {  isChatToFriend &&   ( <div className="chat">
         <Chat friendData={friendData}/>

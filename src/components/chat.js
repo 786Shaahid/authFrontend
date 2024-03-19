@@ -5,6 +5,7 @@ import { chatActions } from "../redux/reducers/chatReducer";
 import { useEffect, useState, useMemo } from "react";
 import { io } from "socket.io-client";
 import { useRef } from "react";
+import BASE_URL from "../utility/environment";
 
 export const Chat = ({ friendData }) => {
   // console.log(friendData);
@@ -15,8 +16,7 @@ export const Chat = ({ friendData }) => {
 (state) => state.chatReducer.isChatToFriend
   );
   const userData = JSON.parse(localStorage.getItem("userData"));
-  // console.log(userData,friendData);
-  // const userData = useSelector(state => state.authReducer.userData);
+ 
   const dispatch = useDispatch();
   const messageScroll = useRef(null);
   /** Create Room Id */
@@ -24,22 +24,13 @@ export const Chat = ({ friendData }) => {
     .sort()
     .toString()
     .substring(17, 30);
-  // console.log("roomId",roomId);
-  let socketUrl;
-
-if (process.env.NODE_ENV === 'development') {
-  socketUrl = 'http://localhost:8080';
-} else {
-  // socketUrl = 'wss://authbackend-74z0.onrender.com/socket.io/?EIO=4&transport=websocket';
-  socketUrl = process.env.REACT_APP_BASE_URL;
-}
   
   
   // const socket = useMemo(() => io('localhost:4000'  , { transports: ['websocket', 'polling'] }), []);
   const socket = useMemo(
     () =>
-      io( socketUrl,{ transports: ["websocket",'polling'] }),
-    [socketUrl]
+      io( BASE_URL,{ transports: ["websocket",'polling'] }),
+    []
   );
 
   useEffect(() => {

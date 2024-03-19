@@ -10,8 +10,6 @@ export const SignInWithEmail = () => {
   const navigate=useNavigate();
   let isMailSend = useSelector((state) => state.authReducer.isMailSend);
   const error = useSelector(state => state.authReducer.error);
-  // const accessToken = useSelector(state => state.authReducer.accessToken);
-  // const refreshToken = useSelector(state => state.authReducer.refreshToken);
 
   // handle submit send email
   const handleEmailMessage = (e) => {
@@ -32,12 +30,7 @@ export const SignInWithEmail = () => {
       console.log(error);
     }
   };
-  // const handleOTP = () => {
-  //   dispatch(sendOtpEmail({ otp: otp }));
-  //   dispatch(userAtions.isEmailSend(isMailSend));
-  //   navigate('/');
-  // };
-
+  
 
   return (
     <>

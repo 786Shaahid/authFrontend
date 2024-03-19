@@ -4,9 +4,9 @@ import { userActions } from '../../redux/reducers/userReducer';
 import   './responseMessage.css';
 import { useDispatch, useSelector } from 'react-redux';
 export const ShowResponse = () => {
-    const loadingUser = useSelector(state => state.authReducer.loading);
+    // const loadingUser = useSelector(state => state.authReducer.loading);
     const messageUser = useSelector(state => state.authReducer.message);
-    const pendingFriend = useSelector(state => state.friendReducer.pending);
+    // const pendingFriend = useSelector(state => state.friendReducer.pending);
     const messageFriend = useSelector(state => state.friendReducer.message);
     const dispatch = useDispatch();
 
@@ -19,14 +19,14 @@ export const ShowResponse = () => {
         setTimeout(() => {
             dispatch(userActions.messageNullUserSlice());
             dispatch(friendActions.messageNullFriendSlice());
-        }, 2500)
+        }, 4000)
     });
 
     return (
         <>
             {
 
-                !(loadingUser || pendingFriend) && (messageUser || messageFriend) && (<div className="responseContainer">
+                 (messageUser || messageFriend) && (<div className="responseContainer">
                     <div className='response'>
                         <div className="responseIcon"> &#10003;</div>
                         <div className='message' >{messageUser ? messageUser : messageFriend}</div>

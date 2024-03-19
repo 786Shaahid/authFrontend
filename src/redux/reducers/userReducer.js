@@ -1,17 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import BASE_URL from "../../utility/environment";
 
 // const BASE_URL = process.env.REACT_APP_BASE_URL ;
 // const BASE_URL=process.env.REACT_APP_LOCAL_URL;
-let BASE_URL;
+// let BASE_URL;
 
-if (process.env.NODE_ENV === 'development') {
-  // Use local development URL
-  BASE_URL =  process.env.REACT_APP_LOCAL_URL;
-} else {
-  // Use Render hosted URL
-  BASE_URL = process.env.REACT_APP_BASE_URL;
-}
+// if (process.env.NODE_ENV === 'development') {
+//   // Use local development URL
+//   BASE_URL =  process.env.REACT_APP_LOCAL_URL;
+// } else {
+//   // Use Render hosted URL
+//   BASE_URL = process.env.REACT_APP_BASE_URL;
+// }
 
 const initialState = {
   isMailSend: false,
@@ -19,14 +20,10 @@ const initialState = {
   error: "",
   message: "",
   accessToken:"",
-  refreshToken:"",
   userData:{},
   loading: false,
   users: [],
-  userloginData:{
-    email:"",
-    password:"",
-  }
+ 
 };
 
 // create action
@@ -140,17 +137,35 @@ export const facebookAuth=createAsyncThunk('auth/facebookAuth',async(data,{rejec
              return fulfillWithValue(response.data);
       } catch (error) {
         console.log(error);
-        return rejectWithValue(error)        
+        return rejectWithValue(error);        
       }
 
 })
+/**  DEFINE SOCIAL AUTHENTICATION */
+export const socialAuth=createAsyncThunk('auth/socialAuth',async(data,{rejectWithValue,fulfillWithValue} )=>{
+                    try {
+                      console.log(BASE_URL);
+                       const response= await axios.get(`${BASE_URL}/api/users/login/success`,{withCredentials:true});
+                       console.log("social auth",response);
+                       return fulfillWithValue(response.data)
+                    } catch (error) {
+                       console.log('error in social auth',error);
+                       return rejectWithValue(error.response)
+                    }         
 
+})
+
+
+
+
+
+/** DEFINE THE USER SLICE  */
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
          userLogin:(state,action)=>{
-            console.log("USER-LOGIN",action.payload);
+            // console.log("USER-LOGIN",action.payload);
             state.userloginData=action.paylaod;
             // state.userloginData.password=action.payload;
          },
@@ -186,29 +201,27 @@ export const authSlice = createSlice({
       state.error='';
     },
     [signupUser.fulfilled]: (state, action) => {
-      console.log("singup-fullfil-31", action.payload);
+      // console.log("singup-fullfil-31", action.payload);
       state.loading = false;
       state.error='';
       state.message = "User Signup Successfully !";
     },
     [signupUser.rejected]: (state, action) => {
-      console.log("singup-reject",action.payload);
+      // console.log("singup-reject",action.payload);
       state.loading = false;
       state.message="";
       state.error=  action.payload?.status===400? action.payload?.data.message : action.payload?.statusText
     },
     // 2. signin
     [signinUser.pending]: (state) => {
-      console.log("loading");
+      // console.log("loading");
       state.loading = true;
       state.message='';
       state.error='';
     },
     [signinUser.fulfilled]: (state, action) => {
-      console.log('singin fullfilled',action.payload);
+      // console.log('singin fullfilled',action.payload);
       state.loading = false;
-      state.accessToken = action.payload.data.accessToken;
-      state.refreshToken=action.payload.data.refreshToken;
       state.userData=action.payload.data.userData;
       localStorage.setItem('accessToken',action.payload.data.accessToken);
       localStorage.setItem('userData',JSON.stringify(action.payload.data.userData));
@@ -216,7 +229,7 @@ export const authSlice = createSlice({
       state.error=''
     },
     [signinUser.rejected]: (state, action) => {
-      console.log('signin-reject',action);
+      // console.log('signin-reject',action);
       state.loading=false
       state.message='';
       state.error= ( action.payload?.status===400? action.payload?.data.message : action.payload?.statusText)|| "Server Doesn't Responding !"
@@ -252,8 +265,6 @@ export const authSlice = createSlice({
     [sendOtpEmail.fulfilled]: (state, action) => {
       // console.log(action.payload.data.userData);
       state.loading = false;
-      state.accessToken = action.payload.data.accessToken;
-      state.refreshToken=action.payload.data.refreshToken;
       state.userData=action.payload.data.userData;
       localStorage.setItem('accessToken',action.payload.data.accessToken);
       localStorage.setItem('userData',JSON.stringify(action.payload.data.userData));
@@ -273,7 +284,7 @@ export const authSlice = createSlice({
       state.error='';
     },
     [getAll.fulfilled]: (state, action) => {
-      // console.log('getAll-full', action.payload.data);
+      console.log('getAll-full', action.payload.data);
       state.loading = false;
       state.users = action.payload.data;
       state.error='';
@@ -286,7 +297,7 @@ export const authSlice = createSlice({
     },
     // logout 
     [logoutUser.pending]:(state)=>{
-      state.loading=false;
+      state.loading=true;
       state.error='';
       state.message='';
       
@@ -295,10 +306,10 @@ export const authSlice = createSlice({
       //  console.log(action);
       localStorage.removeItem('accessToken');
       localStorage.removeItem('userData');
-       state.userData="";
-       state.message="Logout Successfully !";
-       state.error='';
-       state.loading=false;
+      state.userData="";
+      state.message="Logout Successfully !";
+      state.loading=false;
+      state.error='';
     },
     [logoutUser.rejected]:(state,action)=>{
       // console.log(action.payload);
@@ -306,45 +317,70 @@ export const authSlice = createSlice({
       state.message='';
       state.loading=false;
     },
+    // SOCIAL AUTHENTICATION
+    [socialAuth.pending]:(state)=>{
+      state.pending=true;
+      state.message='';
+      state.error=''
 
-    // GOOOGLE AUTHENTICATION
-   [googleAuth.pending]:(state)=>{
-      state.error='';
+    },
+    [socialAuth.fulfilled]:(state,action)=>{
+        console.log('socialauth-fulfilled',action.payload);
+        state.loading = false;
+        state.userData=action.payload.data.userData;
+        localStorage.setItem('accessToken',action.payload.data.accessToken);
+        localStorage.setItem('userData',JSON.stringify(action.payload.data.userData));
+        state.message="Login Successfully !";
+        state.error=''
+    },
+    [socialAuth.rejected]:(state,action)=>{
+      console.log('socialauth-reject',action.payload);
+      state.loading=false
       state.message='';
-      state.loading=true;
-   },
-   [googleAuth.fulfilled]:(state,action)=>{
-    // console.log('google-fullfilled',action.payload);
-       state.loading=false;
-       state.message="Login Successfully";
-       state.error='';
+      state.error= ''
+ 
+    },
 
-   },
-   [googleAuth.rejected]:(state,action)=>{
-      // console.log("google-reject",action.payload);
-      state.loading=false;
-      state.message='';
-      state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
-   },
-    // FACEBOOK AUTHENTICATION
-   [facebookAuth.pending]:(state)=>{
-      state.error='';
-      state.message='';
-      state.loading=true;
-   },
-   [facebookAuth.fulfilled]:(state,action)=>{
-    // console.log('facebook-fullfilled',action.payload);
-       state.loading=false;
-       state.message="Login Successfully";
-       state.error='';
 
-   },
-   [facebookAuth.rejected]:(state,action)=>{
-      // console.log("facebook-reject",action.payload);
-      state.loading=false;
-      state.message='';
-      state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
-   }
+
+  //   // GOOOGLE AUTHENTICATION
+  //  [googleAuth.pending]:(state)=>{
+  //     state.error='';
+  //     state.message='';
+  //     state.loading=true;
+  //  },
+  //  [googleAuth.fulfilled]:(state,action)=>{
+  //   // console.log('google-fullfilled',action.payload);
+  //      state.loading=false;
+  //      state.message="Login Successfully";
+  //      state.error='';
+
+  //  },
+  //  [googleAuth.rejected]:(state,action)=>{
+  //     // console.log("google-reject",action.payload);
+  //     state.loading=false;
+  //     state.message='';
+  //     state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
+  //  },
+  //   // FACEBOOK AUTHENTICATION
+  //  [facebookAuth.pending]:(state)=>{
+  //     state.error='';
+  //     state.message='';
+  //     state.loading=true;
+  //  },
+  //  [facebookAuth.fulfilled]:(state,action)=>{
+  //   // console.log('facebook-fullfilled',action.payload);
+  //      state.loading=false;
+  //      state.message="Login Successfully";
+  //      state.error='';
+
+  //  },
+  //  [facebookAuth.rejected]:(state,action)=>{
+  //     // console.log("facebook-reject",action.payload);
+  //     state.loading=false;
+  //     state.message='';
+  //     state.error = (action.payload?.response?.data?.error)|| "Server Doesn't Responding !";
+  //  }
 
 
 

@@ -4,18 +4,30 @@ import { TfiEmail } from "react-icons/tfi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { facebookAuth, googleAuth, signinUser } from "../redux/reducers/userReducer";
-import { useState } from "react";
+import {  signinUser,} from "../redux/reducers/userReducer";
+import {  useState } from "react";
+import BASE_URL from "../utility/environment";
+
+
 
 export const SignInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const error = useSelector(state => state.authReducer.error);
- 
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  const loginWithGoogle= ()=>{
+     window.open(`${BASE_URL}/api/users/auth/google/callback`,'_self');
+  }
+  
+  const loginWithFacebook=()=>{
+     window.open(`${BASE_URL}/api/users/auth/facebook/callback`,'_self')
+  }
+  
+
+  
 
   const handleSubmit = async (e) => {
     try {
@@ -25,9 +37,9 @@ export const SignInPage = () => {
       if (result.payload?.success) {
         console.log(result);
         navigate('/');
-        setUser({});
       }
     } catch (error) {
+      setUser({});
       console.log(error);
     }
   };
@@ -75,7 +87,7 @@ export const SignInPage = () => {
           <span className="margin_right">
             <FcGoogle />
           </span>
-          <span className="social_auth" onClick={()=>dispatch(googleAuth())}>
+          <span className="social_auth" onClick={loginWithGoogle}>
               Sign in with google
           </span>
         </div>
@@ -83,7 +95,7 @@ export const SignInPage = () => {
           <span className="margin_right">
             <FaFacebook />
           </span>
-          <span className="social_auth" onClick={()=>dispatch(facebookAuth())}>
+          <span className="social_auth" onClick={loginWithFacebook}>
               Sign in with Facebook
           </span>
         </div>
