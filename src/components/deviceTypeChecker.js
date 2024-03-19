@@ -4,15 +4,11 @@ const DeviceTypeChecker = () => {
         return window.innerWidth <= 768;
     };
 
-    const showAlertIfMobile = () => {
+    // Call showAlertIfMobile when the component mounts
+    useEffect(() => {
         if (isMobile()) {
             window.alert('This Application Is Optimized For Desktop Screens.');
         }
-    };  
-
-    // Call showAlertIfMobile when the component mounts
-    useEffect(() => {
-        showAlertIfMobile();
     }, []);
 
     

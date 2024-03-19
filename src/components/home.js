@@ -21,12 +21,12 @@ export const Home = () => {
 
   //    Get all user list
   useEffect(() => {
+    const getData = async () => {
+      await dispatch(getAll(userData._id));
+    };
     getData();
-  },[]);
+  }, [dispatch, userData._id]);
 
- async function getData(){
-   await dispatch(getAll(userData._id));
-  }
 
   return (
     <>
@@ -56,7 +56,7 @@ export const Home = () => {
                       })
                       )
                       dispatch(chatActions.chatBox(isChatToFriend));
-                   await getData();
+                    dispatch(getAll(userData._id));
 
                   }}
                   className="friBtn"
@@ -76,7 +76,7 @@ export const Home = () => {
                         token: accessToken,
                       })
                       );
-                      await getData();
+                      dispatch(getAll(userData._id))
                   }}
                   className="friBtn"
                 >
