@@ -1,5 +1,5 @@
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
+// import { FaFacebook } from "react-icons/fa";
 import { TfiEmail } from "react-icons/tfi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { navStyle } from "./navbar";
@@ -22,9 +22,9 @@ export const SignInPage = () => {
      window.open(`${BASE_URL}/api/users/auth/google/callback`,'_self');
   }
   
-  const loginWithFacebook=()=>{
-     window.open(`${BASE_URL}/api/users/auth/facebook/callback`,'_self')
-  }
+  // const loginWithFacebook=()=>{
+  //    window.open(`${BASE_URL}/api/users/auth/facebook/callback`,'_self')
+  // }
   
 
   
@@ -88,14 +88,14 @@ export const SignInPage = () => {
               Sign in with google
           </span>
         </div>
-        <div className="logBtn">
+        {/* <div className="logBtn">
           <span className="margin_right">
             <FaFacebook />
           </span>
           <span className="social_auth" onClick={loginWithFacebook}>
               Sign in with Facebook
           </span>
-        </div>
+        </div> */}
         <div className="logBtn">
           <span className="margin_right">
             <TfiEmail />
